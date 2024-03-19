@@ -72,11 +72,16 @@ OpenAiChatModel.builder()
     .build();
 ```
 
-No WorkshopTest, descomente o primeiro teste `testModel()`.
+Se você quer usar o serviço da OpenAI, implemente o exemplo abaixo:
+```java
+OpenAiChatModel.withApiKey(System.getenv("OPENAI_KEY"));
+```
+
+No WorkshopTest, descomente o primeiro teste `test_1_Model()`.
 ```java
 class WorkshopTest {
    @Test
-   void testModel() {
+   void test_1_Model() {
       // ...
    }
 }
@@ -97,7 +102,7 @@ Para criar Prompts reutilizáveis, podemos usar os Prompt Templates, uma linguag
 
 Isso ajuda a modificar apenas partes específicas dos prompts conforme necessário.
 
-Vamos criar uma classe chamado `EmojiMovieBot.java`.
+Vamos criar uma classe chamado `EmojiBot.java`.
 - Essa classe recebe um modelo como parâmetro no construtor.
 - Crie um método chamado `generate(String movieName)` que recebe um nome de um filme como parâmetro.
 - Utilize o Prompt Template abaixo para descrever as instruções para o modelo.
@@ -108,20 +113,24 @@ var emojiTemplate = PromptTemplate.from("""
    2. Identify the remarkable objects and moments.
    3. Translate the plot to emojis using the identified objects and moments.
 """);
-var userMessage = emojiTemplate.apply(Map.of("movieName", movieName)).toUserMessage();
 ```
 
-No WorkshopTest, descomente o teste `testPrompt()` e execute o comando de teste.
+Substitua o valor do movieName com o código abaixo
+```java
+emojiTemplate.apply(Map.of("movieName", movieName));
+```
+
+No WorkshopTest, descomente o teste `test_2_PromptTemplate()` e execute o comando de teste.
 ```java
 class WorkshopTest {
    @Test
-   void testPrompt() {
+   void test_2_PromptTemplate() {
        // ...
    }
 }
 ```
 
-Funcionou? Aproveite para ver resultados de diferentes filmes e avaliar a "destreza" do modelo =)
+Aproveite para ver resultados de diferentes filmes e avaliar a "destreza" do modelo =)
 
 ### Memória
 
@@ -133,12 +142,17 @@ Mas como o ChatGPT e outros serviços de chat mantém uma conversa coerente ent�
 
 Para manter o contexto da conversa, é necessário re-enviar todas as mensagens anteriores a cada novo Prompt que escrevemos para o modelo.
 
-Vamos ver como isso funciona com o exemplo a seguir. Vamos criar uma classe `JokenpoBot.java`
+Vamos ver como isso funciona com o exemplo a seguir. Vamos criar uma classe `NumberBot.java`
 - Essa classe recebe um modelo como parâmetro no construtor.
-- Crie uma instância de memória `var chatMemory = MessageWindowChatMemory.withMaxMessages(10)`
-- Adicionar uma SystemMessage na memória com a primeira instrução do JokenpoBot:
+- Crie uma instância de memória `MessageWindowChatMemory.withMaxMessages(10)`
+- Adicione uma SystemMessage na memória para ser uma instrução fixa:
 ```java
-
+SystemMessage.from("""
+    You only accept a valid number or 'Result' as input.
+    For invalid input you will reply with 'Invalid input'
+    For valid numbers, you reply with 'Ok'
+    For 'Result', you will tell me the biggest number between all the numbers I gave to you.
+    """)
 ```
 - Implemente um método chamado `chat(String message)` que retorna o resultado do modelo como String:
 ```java
@@ -154,7 +168,7 @@ var aiMessage = chatModel
 chatMemory.add(aiMessage);
 ```
 
-No WorkshopTest, descomente o teste `testMemory()` e execute o comando de teste.
+No WorkshopTest, descomente o teste `test_3_Memory()` e execute o comando de teste.
 
 ### Retrieval Augmented Generation (RAG)
 
@@ -172,8 +186,6 @@ Podemos entender o RAG nas seguintes etapas:
 3. Para cada interação com o usuário, vetorizar o Prompt com o mesmo modelo de embedding
 4. Buscar os dados relevantes no embedding storage a partir do Prompt vetorizado
 5. Montar um Prompt final para o modelo juntando o Prompt original + os dados relevantes para contexto
-
-
 
 ### Tools (Function Calling)
 
