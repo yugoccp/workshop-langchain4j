@@ -5,11 +5,11 @@ import java.util.Map;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.input.PromptTemplate;
 
-public class EmojiMovieBot {
+public class EmojiBot {
     
     private ChatLanguageModel chatModel;
 
-    public EmojiMovieBot(ChatLanguageModel chatModel) {
+    public EmojiBot(ChatLanguageModel chatModel) {
         this.chatModel = chatModel;
     }
 
@@ -20,7 +20,7 @@ public class EmojiMovieBot {
             2. Identify the remarkable objects and moments.
             3. Translate the plot to emojis using the identified objects and moments.
         """);
-        var input = emojiTemplate.apply(Map.of("movieName", movieName)).toUserMessage();
-        return chatModel.generate(input.toString());
+        var userMessage = emojiTemplate.apply(Map.of("movieName", movieName)).toUserMessage();
+        return chatModel.generate(userMessage).content().text();
     }
 }

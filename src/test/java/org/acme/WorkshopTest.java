@@ -2,12 +2,10 @@ package org.acme;
 
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-
 class WorkshopTest {
     
-    // @Test
-    void testModel() {
+    @Test
+    void test_1_Model() {
         
         var chatModel = ChatModelFactory.createModel();
         
@@ -16,41 +14,50 @@ class WorkshopTest {
         System.out.println(result);
     }
 
-    // @Test
-    void testPrompt() {
+    @Test
+    void test_2_PromptTemplate() {
         
         var chatModel = ChatModelFactory.createModel();
-        var emojiMovieBot = new EmojiMovieBot(chatModel);
+        var emojiMovieBot = new EmojiBot(chatModel);
 
         var result = emojiMovieBot.generate("Titanic");
 
         System.out.println(result);
     }
 
-    //@Test
-    void testMemory() {
+    @Test
+    void test_3_Memory() {
         
         var chatModel = ChatModelFactory.createModel();
-        var jokenpoBot = new JokenpoBot(chatModel);
+        var memoryBot = new NumberBot(chatModel);
 
+        memoryBot.chat("33");
+        memoryBot.chat("120");
+        memoryBot.chat("3");
+        memoryBot.chat("7");
 
-        var myOption = "Rock";
-        var botOption = jokenpoBot.chat(myOption);
-        var result = jokenpoBot.chat("Who won and why?");
-
-        System.out.println("USER: "+ myOption);
-        System.out.println("JOKENPOBOT: " + botOption);
+        var result = memoryBot.chat("Result");
         System.out.println(result);
     }
 
     @Test
-    void testRAG() {
+    void test_4_RAG() {
         
         var chatModel = ChatModelFactory.createModel();
-        var documentBot = new DocumentBot(chatModel);
+        var documentBot = new DocumentBot(chatModel, "news.rss");
 
-        documentBot.loadFile("news.html");
-        String result = documentBot.chat("Qual a boa de hoje?");
+        String result = documentBot.chat("What's new at TikTok?");
+
+        System.out.println(result);
+    }
+
+    @Test
+    void test_5_Tools() {
+
+        var chatModel = ChatModelFactory.createModel();
+        var agentBot = new SearchBot(chatModel);
+
+        String result = agentBot.chat("What google says about Generative AI?");
 
         System.out.println(result);
     }
