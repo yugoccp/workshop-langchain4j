@@ -172,20 +172,16 @@ No WorkshopTest, descomente o teste `test_3_Memory()` e execute o comando de tes
 
 ### 4. Retrieval Augmented Generation (RAG)
 
-Sabemos que os modelos não possuem dados ou informações que não estiveram presentes durante o seu treinamento.
+Os modelos não podem usar informações que não foram incluídas no seu treinamento. Além disso, eles têm um limite no tamanho do texto que conseguem analisar de uma vez, e processar textos grandes demora mais tempo.
 
-Aprendemos também que os modelos possuem limites de tokens para o seu input. E quanto maior o input, maior a carga de processamento necessário.
+Então, como lidar com muitas informações ao mesmo tempo, como analisar um livro ou artigo longo? Uma solução é utilizar a arquitetura RAG (Retrieval Augmented Generation), que foi criada para ajudar nesse problema.
 
-Como podemos trabalhar!1 com um grande volume de dados, mais recentes, ou privados, que não estiveram presentes durante o treinamento?
+Vamos supor que precisamos analisar uma página de notícias e queremos um resumo dos assuntos de tecnologia, seguiriamos esses passos:
 
-O RAG (Retrieval Augmented Generation) é uma arquitetura que endereça exatamente essa necessidade.
-
-Podemos entender o RAG nas seguintes etapas:
-1. Vetorizar os dados externos com um modelo de embedding
-2. Armazenar os dados externos vetorizados em um embedding (vector) storage
-3. Para cada interação com o usuário, vetorizar o Prompt com o mesmo modelo de embedding
-4. Buscar os dados relevantes no embedding storage a partir do Prompt vetorizado
-5. Montar um Prompt final para o modelo juntando o Prompt original + os dados relevantes para contexto
+1. Transformamos toda a página em vetores usando um Modelo de Embeddings.
+2. Convertemos também o pedido do usuário ("resuma os assuntos de tecnologia da página de notícia") em vetor. Assim, conseguimos identificar as partes da notícia que se relacionam com o pedido.
+3. Com base nessas partes, criamos um novo pedido para o modelo: "Resuma os assuntos de tecnologia da página de notícia, com base nas informações selecionadas: {{informações selecionadas}}"
+4. Isso nos permite focar apenas nas informações relevantes ao pedido do usuário, tornando o Prompt final menor e o processo mais eficiente.
 
 ### 5. Tools (Function Calling)
 
