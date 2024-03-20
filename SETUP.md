@@ -76,13 +76,4 @@ Precisa cadastrar seu cartão, mas o custo para realizar o Workshop é mínimo (
 
 1. Crie uma conta na OpenAI. 
 2. Crie uma API Key.
-3. Crie uma variável de ambiente chamada `OPENAI_KEY` com o valor da sua API Key.
-4. Altere o código do ChatModelFactory.java como o exemplo abaixo:
-```java
-public class ChatModelFactory {
-
-    public static ChatLanguageModel createModel() {
-        return OpenAiChatModel.withApiKey(System.getenv("OPENAI_KEY"));
-    }
-}
-```
+3. Crie uma variável de ambiente no seu sistema chamada `OPENAI_KEY` com o valor da sua API Key.
