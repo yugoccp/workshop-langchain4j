@@ -1,4 +1,4 @@
-package org.acme;
+package org.acme.bots;
 
 import java.util.Map;
 
@@ -15,10 +15,8 @@ public class EmojiBot {
 
     public String generate(String movieName) {
         var emojiTemplate = PromptTemplate.from("""
-            From the movie '{{movieName}}':
-            1. Generate a summary of the movie plot.
-            2. Identify the remarkable objects and moments.
-            3. Translate the plot to emojis using the identified objects and moments.
+            From the movie '{{movieName}}', generate a short plot only using emojis
+            that illustrates remarkable objects or moments of the movie.
         """);
         var userMessage = emojiTemplate.apply(Map.of("movieName", movieName)).toUserMessage();
         return chatModel.generate(userMessage).content().text();

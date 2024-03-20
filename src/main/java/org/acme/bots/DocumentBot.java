@@ -1,4 +1,4 @@
-package org.acme;
+package org.acme.bots;
 
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.DocumentParser;
@@ -9,13 +9,11 @@ import dev.langchain4j.data.document.splitter.DocumentSplitters;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.chat.ChatLanguageModel;
-import dev.langchain4j.model.embedding.AllMiniLmL6V2EmbeddingModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.rag.content.retriever.ContentRetriever;
 import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
 import dev.langchain4j.service.AiServices;
 import dev.langchain4j.store.embedding.EmbeddingStore;
-import dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore;
 
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -25,50 +23,45 @@ import java.util.List;
 
 
 public class DocumentBot {
-    private DocumentAssistant documentAssistant;
+    private ChatLanguageModel chatModel;
+    private EmbeddingModel embeddingModel;
+    private EmbeddingStore embeddingStore;
 
     interface DocumentAssistant {
         String answer(String query);
     }
 
-    public DocumentBot(ChatLanguageModel chatModel, String filename) {
+    public DocumentBot(ChatLanguageModel chatModel, EmbeddingModel embeddingModel, EmbeddingStore embeddingStore) {
+        this.chatModel = chatModel;
+        this.embeddingModel = embeddingModel;
+        this.embeddingStore = embeddingStore;
+    }
 
+    public String chat(String filename, String message) {
         // Transform single file content into chunks of text segments.
         var segments = buildTextSegments(filename);
 
-        // NOTE: same embedding model should be used in embedding store
-        // and content retriever to keep search result consistent.
-        var embeddingModel = new AllMiniLmL6V2EmbeddingModel();
+        // Transform segments into embeddings (vectors)
+        var embeddings = embeddingModel.embedAll(segments).content();
 
-        // Transform text segments into vector using embedding model
-        // and store at embedding storage
-        var embeddingStore = buildEmbeddingStore(embeddingModel, segments);
+        // Store embeddings with the corresponding segments
+        embeddingStore.addAll(embeddings, segments);
 
-        // Retriever transforms any input into vector using embedding model
-        // and return relevant chunks of text from the embedding storage
-        // using transformed input.
-        var contentRetriever = buildContentRetriever(embeddingModel, embeddingStore);
+        var documentAssistant = buildDocumentAssistant(chatModel, embeddingModel, embeddingStore);
 
-        this.documentAssistant = buildDocumentAssistant(chatModel, contentRetriever);
-    }
-
-    public String chat(String message) {
         return documentAssistant.answer(message);
     }
 
-    private DocumentAssistant buildDocumentAssistant(ChatLanguageModel chatModel, ContentRetriever contentRetriever) {
+    private DocumentAssistant buildDocumentAssistant(ChatLanguageModel chatModel, EmbeddingModel embeddingModel, EmbeddingStore embeddingStore) {
+        // Helper class to convert user input into a vector with an embedding model
+        // and get related content from the embedding database.
+        var contentRetriever = buildContentRetriever(embeddingModel, embeddingStore);
+
         return AiServices.builder(DocumentAssistant.class)
                 .chatLanguageModel(chatModel)
                 .contentRetriever(contentRetriever)
                 .chatMemory(MessageWindowChatMemory.withMaxMessages(10))
                 .build();
-    }
-
-    private EmbeddingStore buildEmbeddingStore(EmbeddingModel embeddingModel, List<TextSegment> segments) {
-        var embeddings = embeddingModel.embedAll(segments).content();
-        var embeddingStore = new InMemoryEmbeddingStore<TextSegment>();
-        embeddingStore.addAll(embeddings, segments);
-        return embeddingStore;
     }
 
     private ContentRetriever buildContentRetriever(EmbeddingModel embeddingModel, EmbeddingStore embeddingStore) {
