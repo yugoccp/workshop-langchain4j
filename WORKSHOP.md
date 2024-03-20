@@ -33,11 +33,6 @@ Adicione as dependências do [Langchain4J](https://docs.langchain4j.dev/get-star
     <artifactId>langchain4j-open-ai</artifactId>
     <version>0.28.0</version>
 </dependency>
-<dependency>
-   <groupId>dev.langchain4j</groupId>
-   <artifactId>langchain4j-embeddings-all-minilm-l6-v2</artifactId>
-   <version>0.28.0</version>
-</dependency>
 ```
 
 ## Inicie o servidor LMStudio!
@@ -64,12 +59,12 @@ Da mesma forma que o código aberto é compartilhado no GitHub, esses modelos po
 
 O LMStudio, por exemplo, utiliza o HuggingFace para disponibilizar os modelos. 
 
-Vamos criar uma classe Java chamado ChatModelFactory.java
-- Essa classe vai ter um método estático `createModel()` que retorna um ChatLanguageModel (do Langchain4J).
+Vamos criar uma classe Java chamado `org.acme.factories.AiModelFactory.java`
+- Essa classe vai ter um método estático `createChatModel()` que retorna um ChatLanguageModel (do Langchain4J).
 - Para criar o modelo, vamos conectar com o LMStudio utilizando o Langchain4J para ajudar :)
 - Vamos usar o builder do `OpenAiChatModel` e passar a URL do LMStudio
 - A `apiKey` nesse caso pode ser ignorado mas ainda deve ser definido um valor para o builder.
-
+ß
 ```java
 OpenAiChatModel.builder()
     .baseUrl("http://localhost:1234/v1")
@@ -77,7 +72,7 @@ OpenAiChatModel.builder()
     .build();
 ```
 
-Se você opte por usar o serviço da OpenAI, basta alterar o código como o exemplo abaixo:
+Se você optou por usar o serviço da OpenAI, basta alterar o código com o exemplo abaixo:
 ```java
 OpenAiChatModel.withApiKey(System.getenv("OPENAI_KEY"));
 ```
@@ -107,16 +102,14 @@ Para criar Prompts reutilizáveis, podemos usar os Prompt Templates, uma linguag
 
 Isso ajuda a modificar apenas partes específicas dos prompts conforme necessário.
 
-Vamos criar uma classe chamado `EmojiBot.java`.
+Vamos criar uma classe chamado `org.acme.bots.EmojiBot.java`.
 - Essa classe deve receber o modelo como parâmetro no construtor.
 - Crie um método chamado `generate(String movieName)` que recebe um nome de um filme como parâmetro e retorna uma String com o output do modelo.
 - Utilize o Prompt Template abaixo para descrever as instruções para o modelo.
 ```java
 var emojiTemplate = PromptTemplate.from("""
-   From the movie '{{movieName}}':
-   1. Generate a summary of the movie plot.
-   2. Identify the remarkable objects and moments.
-   3. Translate the plot to emojis using the identified objects and moments.
+   From the movie '{{movieName}}', generate a short plot only using emojis
+   that illustrates remarkable objects or moments of the movie.
 """);
 ```
 
@@ -147,16 +140,16 @@ Mas como o ChatGPT e outros serviços de chat mantém uma conversa coerente?
 
 Para manter o contexto da conversa, é necessário re-enviar todas as mensagens anteriores a cada novo Prompt que escrevemos para o modelo.
 
-Veremos como isso funciona com o exemplo a seguir. Vamos criar uma classe `NumberBot.java`
+Veremos como isso funciona com o exemplo a seguir. Vamos criar uma classe `org.acme.bots.ResumeBot.java`
 - Essa classe deve receber o modelo como parâmetro no construtor.
 - Crie uma instância de memória `MessageWindowChatMemory.withMaxMessages(10)`
 - Adicione uma SystemMessage na memória para ser uma instrução fixa do NumberBot:
 ```java
 SystemMessage.from("""
-    You only accept a valid number or 'Result' as input.
-    For invalid input you will reply with 'Invalid input'
-    For valid numbers, you reply with 'Ok'
-    For 'Result', you will tell me the biggest number between all the numbers I gave to you.
+    You are an AI skilled in analyzing user-provided information to craft professional resumes. 
+    When a user provides you with descriptions of their skills or any other relevant details, acknowledge each entry with a simple 'Ok.' 
+    Once the user requests a summary, synthesize all the acknowledged information into a coherent 
+    and concise resume summary that highlights the user's qualifications and strengths.
     """)
 ```
 - Implemente um método chamado `chat(String message)` que retorna o output do modelo como String.
@@ -172,12 +165,26 @@ Os modelos não podem usar informações que não foram incluídas no seu treina
 
 Então, como lidar com muitas informações ao mesmo tempo, como analisar um livro ou artigo longo? Uma solução é utilizar a arquitetura RAG (Retrieval Augmented Generation), que foi criada para ajudar nesse problema.
 
-Vamos supor que precisamos analisar uma página de notícias e queremos um resumo dos assuntos de tecnologia, seguiriamos esses passos:
-
+Vamos supor que precisamos analisar uma página de notícias e queremos um resumo dos assuntos de tecnologia:
 1. Transformamos toda a página em vetores usando um Modelo de Embeddings.
 2. Convertemos também o pedido do usuário ("resuma os assuntos de tecnologia da página de notícia") em vetor. Assim, conseguimos identificar as partes da notícia que se relacionam com o pedido.
 3. Com base nessas partes, criamos um novo pedido para o modelo: "Resuma os assuntos de tecnologia da página de notícia, com base nas informações selecionadas: {{informações selecionadas}}"
 4. Isso nos permite focar apenas nas informações relevantes ao pedido do usuário, tornando o Prompt final menor e o processo mais eficiente.
+
+Para esse exercício, precisaremos adicionar uma nova dependência para o Embedding Model:
+```xml
+<dependency>
+   <groupId>dev.langchain4j</groupId>
+   <artifactId>langchain4j-embeddings-all-minilm-l6-v2</artifactId>
+   <version>0.28.0</version>
+</dependency>
+```
+
+- Crie uma classe com o nome `org.acme.bots.DocumentBot`
+- Essa classe deve receber ChatLanguageModel, EmbeddingModel, EmbeddingStore, e uma String com o arquivo a ser carregado como parâmetros no construtor.
+- Crie uma instância de memória `MessageWindowChatMemory.withMaxMessages(10)`
+- Adicione uma SystemMessage na memória para ser uma instrução fixa do NumberBot:
+
 
 ### 5. Tools (Function Calling)
 
