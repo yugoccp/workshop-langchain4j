@@ -2,14 +2,19 @@
 
 ## Crie um projeto Quarkus
 
-Faça um fork do projeto do Workshop ou crie um projeto novo Quarkus com o seguinte comando
+Faça um fork do projeto do Workshop
 ```shell
-quarkus create workshop-java-llm
-
-cd workshop-java-llm
+git clone https://github.com/yugoccp/workshop-tdc-summit-sp-2024.git
 ```
 
-Você pode executar a aplicação em modo de desenvolvedor:
+OU crie um projeto novo Quarkus com o seguinte comando
+```shell
+quarkus create workshop-tdc-summit-2024
+
+cd workshop-tdc-summit-2024
+```
+
+Execute a aplicação em modo de desenvolvedor para validar que tudo ocorreu bem:
 ```shell
 ./mvnw compile quarkus:dev
 ```
