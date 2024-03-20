@@ -72,7 +72,7 @@ OpenAiChatModel.builder()
     .build();
 ```
 
-Se você quer usar o serviço da OpenAI, implemente o exemplo abaixo:
+Se você opte por usar o serviço da OpenAI, basta alterar o código como o exemplo abaixo:
 ```java
 OpenAiChatModel.withApiKey(System.getenv("OPENAI_KEY"));
 ```
