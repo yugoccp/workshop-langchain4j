@@ -49,7 +49,7 @@ O LMStudio vai disponibilizar as mesmas APIs da OpenAI para o modelo selecionado
 
 Copie o arquivo WorkshopTest.java para o seu diretório de testes `src/test/java/org/acme`.
 
-### Modelos
+### 1. Modelos
 
 Atualmente, existem muitos modelos de linguagem grande (LLM) disponíveis, que se diferenciam em tamanho, desempenho e finalidade. 
 
@@ -94,7 +94,7 @@ quarkus test
 
 Funcionando?! :) Então vamos seguir!
 
-### Prompt template
+### 2. Prompt template
 
 Os Prompts são os inputs para os modelos, que contempla o texto a ser completado, contexto e instruções.
 
@@ -132,7 +132,7 @@ class WorkshopTest {
 
 Aproveite para ver resultados de diferentes filmes e avaliar a "destreza" do modelo =)
 
-### Memória
+### 3. Memória
 
 Diferente do que muitos imaginam, os modelo LLM atuais não possuem memória sobre os inputs que enviamos. 
 
@@ -170,7 +170,7 @@ chatMemory.add(aiMessage);
 
 No WorkshopTest, descomente o teste `test_3_Memory()` e execute o comando de teste.
 
-### Retrieval Augmented Generation (RAG)
+### 4. Retrieval Augmented Generation (RAG)
 
 Sabemos que os modelos não possuem dados ou informações que não estiveram presentes durante o seu treinamento.
 
@@ -187,7 +187,7 @@ Podemos entender o RAG nas seguintes etapas:
 4. Buscar os dados relevantes no embedding storage a partir do Prompt vetorizado
 5. Montar um Prompt final para o modelo juntando o Prompt original + os dados relevantes para contexto
 
-### Tools (Function Calling)
+### 5. Tools (Function Calling)
 
 Nem todos os modelos suportam Tools. Atualmente os seguintes modelos podem ser usados:
 - OpenAiChatModel
@@ -195,4 +195,4 @@ Nem todos os modelos suportam Tools. Atualmente os seguintes modelos podem ser u
 - LocalAiChatModel
 - QianfanChatModel
 
-### Seu gerenciador de Prompts pessoal!
+## Seu Gerenciador de Prompts pessoal!
