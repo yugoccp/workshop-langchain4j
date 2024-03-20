@@ -94,7 +94,7 @@ quarkus test
 
 Funcionando?! :) Então vamos seguir!
 
-### 2. Prompt template
+### 2. Prompt Template
 
 Os Prompts são os inputs para os modelos, que contempla o texto a ser completado, contexto e instruções.
 
@@ -104,7 +104,7 @@ Isso ajuda a modificar apenas partes específicas dos prompts conforme necessár
 
 Vamos criar uma classe chamado `EmojiBot.java`.
 - Essa classe recebe um modelo como parâmetro no construtor.
-- Crie um método chamado `generate(String movieName)` que recebe um nome de um filme como parâmetro.
+- Crie um método chamado `generate(String movieName)` que recebe um nome de um filme como parâmetro e retorna uma String com o output do modelo.
 - Utilize o Prompt Template abaixo para descrever as instruções para o modelo.
 ```java
 var emojiTemplate = PromptTemplate.from("""
