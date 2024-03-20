@@ -103,7 +103,7 @@ Para criar Prompts reutilizáveis, podemos usar os Prompt Templates, uma linguag
 Isso ajuda a modificar apenas partes específicas dos prompts conforme necessário.
 
 Vamos criar uma classe chamado `EmojiBot.java`.
-- Essa classe recebe um modelo como parâmetro no construtor.
+- Essa classe deve receber o modelo como parâmetro no construtor.
 - Crie um método chamado `generate(String movieName)` que recebe um nome de um filme como parâmetro e retorna uma String com o output do modelo.
 - Utilize o Prompt Template abaixo para descrever as instruções para o modelo.
 ```java
@@ -134,18 +134,18 @@ Aproveite para ver resultados de diferentes filmes e avaliar a "destreza" do mod
 
 ### 3. Memória
 
-Diferente do que muitos imaginam, os modelo LLM atuais não possuem memória sobre os inputs que enviamos. 
+Diferente do que muitos imaginam, os modelos atuais não possuem memória sobre os inputs que enviamos. 
 
-A maioria deles são modelos pré-treinados, com os valores dos pesos da sua rede neural já calculada.
+A maioria deles são modelos pré-treinados, com os valores dos pesos da sua rede neural já calculada a partir da grande massa de dados usados durante o seu treinamento.
 
-Mas como o ChatGPT e outros serviços de chat mantém uma conversa coerente então? 
+Mas como o ChatGPT e outros serviços de chat mantém uma conversa coerente? 
 
 Para manter o contexto da conversa, é necessário re-enviar todas as mensagens anteriores a cada novo Prompt que escrevemos para o modelo.
 
-Vamos ver como isso funciona com o exemplo a seguir. Vamos criar uma classe `NumberBot.java`
-- Essa classe recebe um modelo como parâmetro no construtor.
+Veremos como isso funciona com o exemplo a seguir. Vamos criar uma classe `NumberBot.java`
+- Essa classe deve receber o modelo como parâmetro no construtor.
 - Crie uma instância de memória `MessageWindowChatMemory.withMaxMessages(10)`
-- Adicione uma SystemMessage na memória para ser uma instrução fixa:
+- Adicione uma SystemMessage na memória para ser uma instrução fixa do NumberBot:
 ```java
 SystemMessage.from("""
     You only accept a valid number or 'Result' as input.
@@ -154,19 +154,10 @@ SystemMessage.from("""
     For 'Result', you will tell me the biggest number between all the numbers I gave to you.
     """)
 ```
-- Implemente um método chamado `chat(String message)` que retorna o resultado do modelo como String:
-```java
-// Adiciona mensagem do usuário no chatMemory
-chatMemory.add(UserMessage.from(message));
-
-// Envia todas as mensagens para o modelo
-var aiMessage = chatModel
-       .generate(chatMemory.messages())
-       .content();
-
-// Adiciona a resposta do modelo na memória para ser enviado na próxima interação
-chatMemory.add(aiMessage);
-```
+- Implemente um método chamado `chat(String message)` que retorna o output do modelo como String.
+- Adicione cada mensagem do usuário no chatMemory `chatMemory.add(UserMessage.from(message))`
+- Envie todas as mensagens para o chatModel `chatMemory.messages()`
+- Adicione a resposta do modelo na memória também para ser enviado na próxima interação `chatMemory.add(aiMessage)`
 
 No WorkshopTest, descomente o teste `test_3_Memory()` e execute o comando de teste.
 
