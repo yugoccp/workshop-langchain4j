@@ -23,14 +23,18 @@ public class SummaryBot {
 
     public String chat(String message){
 
+        // Add user message to chatMemory
         chatMemory.add(UserMessage.from(message));
 
+        // Send all the chatMemory messages to chatModel
         var aiMessage = chatModel
                 .generate(chatMemory.messages())
                 .content();
 
+        // Add model response to chatMemory to give whole context for the model in the next Prompt
         chatMemory.add(aiMessage);
 
+        // Return model response text
         return aiMessage.text();
     }
     

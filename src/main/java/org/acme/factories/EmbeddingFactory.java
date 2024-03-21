@@ -14,4 +14,6 @@ public class EmbeddingFactory {
     public static EmbeddingStore createEmbeddingStore() {
         return new InMemoryEmbeddingStore();
     }
+
+
 }

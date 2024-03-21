@@ -7,7 +7,7 @@ public class AiModelFactory {
 
 
     public static ChatLanguageModel createChatModel() {
-        return createLocalChatModel();
+        return createOpenAIChatModel();
     }
 
     public static ChatLanguageModel createLocalChatModel() {

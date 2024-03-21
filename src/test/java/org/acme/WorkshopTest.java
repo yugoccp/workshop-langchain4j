@@ -5,6 +5,7 @@ import org.acme.bots.DocumentBot;
 import org.acme.bots.EmojiBot;
 import org.acme.bots.SearchBot;
 import org.acme.factories.AiModelFactory;
+import org.acme.factories.ContentRetrieverFactory;
 import org.acme.factories.EmbeddingFactory;
 import org.junit.jupiter.api.Test;
 
@@ -49,10 +50,11 @@ class WorkshopTest {
         var chatModel = AiModelFactory.createChatModel();
         var embeddingModel = EmbeddingFactory.createEmbeddingModel();
         var embeddingStore = EmbeddingFactory.createEmbeddingStore();
+        var fileContentRetriever = ContentRetrieverFactory.createFileContentRetriever(embeddingModel, embeddingStore, "news.rss");
 
-        var documentBot = new DocumentBot(chatModel, embeddingModel, embeddingStore);
+        var documentBot = new DocumentBot(chatModel, fileContentRetriever);
 
-        String result = documentBot.chat("news.rss", "What's new at TikTok?");
+        String result = documentBot.chat("What's new at TikTok?");
 
         System.out.println(result);
     }

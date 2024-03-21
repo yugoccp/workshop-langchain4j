@@ -17,16 +17,7 @@ public class SearchBot {
 
     private GoogleSearchAssistant searchAssistant;
 
-    public SearchBot(ChatLanguageModel chatModel) {
-        this.searchAssistant = AiServices.builder(GoogleSearchAssistant.class)
-                .chatLanguageModel(chatModel)
-                .chatMemory(MessageWindowChatMemory.withMaxMessages(10))
-                .tools(new SearchTools())
-                .build();
-    }
-
     class SearchTools {
-
         @Tool("Searches Google for relevant URLs, given the query")
         public List<String> searchGoogle(@P("search query") String query) {
             var googleSearchURL = "https://www.google.com/search?q="+query.replace(" ", "+");
@@ -56,6 +47,14 @@ public class SearchBot {
 
     interface GoogleSearchAssistant {
         String chat(String userMessage);
+    }
+
+    public SearchBot(ChatLanguageModel chatModel) {
+        this.searchAssistant = AiServices.builder(GoogleSearchAssistant.class)
+                .chatLanguageModel(chatModel)
+                .chatMemory(MessageWindowChatMemory.withMaxMessages(10))
+                .tools(new SearchTools())
+                .build();
     }
 
     public String chat(String userMessage) {

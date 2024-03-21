@@ -14,13 +14,17 @@ public class EmojiBot {
     }
 
     public String generate(String movieName) {
+
+        // Create a PromptTemplate for model instructions.
         var emojiTemplate = PromptTemplate.from("""
             From the movie '{{movieName}}', generate a short plot only using emojis
             that illustrates remarkable objects or moments of the movie.
         """);
 
-        var prompt = emojiTemplate.apply(Map.of("movieName", movieName)).toString();
+        // Replace template variables with the movieName.
+        var userMessage = emojiTemplate.apply(Map.of("movieName", movieName)).toUserMessage();
 
-        return chatModel.generate(prompt);
+        // Send the template result to the model and return the model response.
+        return chatModel.generate(userMessage).content().text();
     }
 }
