@@ -140,38 +140,39 @@ Mas como o ChatGPT e outros serviços de chat mantém uma conversa coerente?
 
 Para manter o contexto da conversa, é necessário re-enviar todas as mensagens anteriores a cada novo Prompt que escrevemos para o modelo.
 
-Veremos como isso funciona com o exemplo a seguir. Vamos criar uma classe `org.acme.bots.ResumeBot.java`
-- Essa classe deve receber o modelo como parâmetro no construtor.
-- Crie uma instância de memória `MessageWindowChatMemory.withMaxMessages(10)`
-- Adicione uma SystemMessage na memória para ser uma instrução fixa do NumberBot:
+Veremos como isso funciona com o exemplo a seguir. Vamos implementar a classe `org.acme.bots.SummaryBot.java`
+- Instancie o `chatMemory` no construtor da classe, com uma memória de 10 mensagens: `MessageWindowChatMemory.withMaxMessages(10)`
+- Adicione uma SystemMessage na memória para ser uma instrução fixa do SummaryBot:
 ```java
 SystemMessage.from("""
-    You are an AI skilled in analyzing user-provided information to craft professional resumes. 
-    When a user provides you with descriptions of their skills or any other relevant details, acknowledge each entry with a simple 'Ok.' 
-    Once the user requests a summary, synthesize all the acknowledged information into a coherent 
-    and concise resume summary that highlights the user's qualifications and strengths.
+    You are an AI skilled in analyzing user-provided information to generate coherent and concise summary. 
+    When a user provides you with descriptions, acknowledge with an 'Ok.' 
+    Once the user requests a summary, synthesize all the acknowledged information into a coherent and concise description.
     """)
 ```
-- Implemente um método chamado `chat(String message)` que retorna o output do modelo como String.
-- Adicione cada mensagem do usuário no chatMemory `chatMemory.add(UserMessage.from(message))`
-- Envie todas as mensagens para o chatModel `chatMemory.messages()`
+- No método `chat()`, adicione cada mensagem do usuário no chatMemory `chatMemory.add(UserMessage.from(message))`
+- Envie todas as mensagens para o chatModel: `chatMemory.messages()`
 - Adicione a resposta do modelo na memória também para ser enviado na próxima interação `chatMemory.add(aiMessage)`
 
 No WorkshopTest, descomente o teste `test_3_Memory()` e execute o comando de teste.
 
 ### 4. Retrieval Augmented Generation (RAG)
 
-Os modelos não podem usar informações que não foram incluídas no seu treinamento. Além disso, eles têm um limite no tamanho do texto que conseguem analisar de uma vez, e processar textos grandes demora mais tempo.
+Os modelos não podem usar informações que não foram incluídas no seu treinamento. Além disso, eles têm um limite no tamanho do input que conseguem analisar de uma vez, e processar inputs grandes demora mais tempo.
 
-Então, como lidar com muitas informações ao mesmo tempo, como analisar um livro ou artigo longo? Uma solução é utilizar a arquitetura RAG (Retrieval Augmented Generation), que foi criada para ajudar nesse problema.
+E quando precisamos lidar com muitas informações ao mesmo tempo? Como analisar um livro ou um artigo longo? O que podemos fazer? 
 
-Vamos supor que precisamos analisar uma página de notícias e queremos um resumo dos assuntos de tecnologia:
-1. Transformamos toda a página em vetores usando um Modelo de Embeddings.
-2. Convertemos também o pedido do usuário ("resuma os assuntos de tecnologia da página de notícia") em vetor. Assim, conseguimos identificar as partes da notícia que se relacionam com o pedido.
-3. Com base nessas partes, criamos um novo pedido para o modelo: "Resuma os assuntos de tecnologia da página de notícia, com base nas informações selecionadas: {{informações selecionadas}}"
-4. Isso nos permite focar apenas nas informações relevantes ao pedido do usuário, tornando o Prompt final menor e o processo mais eficiente.
+Uma solução é utilizar o RAG, ou Retrieval-Augmented Generation, uma técnica de inteligência artificial que combina a recuperação de informações com a geração de texto. 
 
-Para esse exercício, precisaremos adicionar uma nova dependência para o Embedding Model:
+Funciona da seguinte forma:
+- Primeiro, transformamos a fonte de dados em vetores (embeddings) com a ajuda de um modelo de vetores, e armazenamos o resultado.
+- Segundo, ao receber um prompt de usuário, o sistema busca da base de vetores as informações relevantes ao que foi solicitado.
+- Em seguida, usa essas informações recuperadas como contexto adicional para gerar uma resposta mais precisa e informativa. 
+
+Essencialmente, o RAG seleciona e fornece somente as informações relevantes do contexto para o input do usuário. 
+Assim, o modelo recebe apenas o necessário para processar o input, evitando um processamento pesado ou exceder o limite de tokens do modelo.
+
+Para esse exercício, precisaremos adicionar uma nova dependência no projeto para o Embedding Model:
 ```xml
 <dependency>
    <groupId>dev.langchain4j</groupId>
@@ -180,18 +181,60 @@ Para esse exercício, precisaremos adicionar uma nova dependência para o Embedd
 </dependency>
 ```
 
-- Crie uma classe com o nome `org.acme.bots.DocumentBot`
-- Essa classe deve receber ChatLanguageModel, EmbeddingModel, EmbeddingStore, e uma String com o arquivo a ser carregado como parâmetros no construtor.
-- Crie uma instância de memória `MessageWindowChatMemory.withMaxMessages(10)`
-- Adicione uma SystemMessage na memória para ser uma instrução fixa do NumberBot:
+- Crie uma classe com o nome `org.acme.factories.EmbeddingFactory`
+- Por simplicidade, trabalharemos com instâncias em memória. Adicione os métodos abaixo para essa classe:
+```java
+public static EmbeddingModel createEmbeddingModel() {
+     return new AllMiniLmL6V2EmbeddingModel();
+ }
 
+ public static EmbeddingStore createEmbeddingStore() {
+     return new InMemoryEmbeddingStore();
+ }
+```
+- Implemente o método `chat(String filename, String message)` da classe `DocumentBot.java`
+```java 
+public String chat(String filename, String message) {
+        // Transform single file content into chunks of text segments.
+        var segments = createTextSegments(filename);
+
+        // Transform segments into embeddings (vectors)
+        var embeddings = createEmbeddings(segments);
+
+        // Store embeddings with the corresponding segments
+        storeEmbeddings(embeddings, segments);
+
+        // Build RAG assistant which filters context from the document to add to user prompt
+        var documentAssistant = buildDocumentAssistant(chatModel, embeddingModel, embeddingStore);
+
+        return documentAssistant.answer(message);
+  }
+```
+No WorkshopTest, descomente o teste `test_4_RAG()` e execute o comando de teste.
 
 ### 5. Tools (Function Calling)
+
+Assim como o LLM por padrão não tem acesso à conhecimento externos, eles também não tem a capacidade de executar ações externas.
+
+Para resolver esse problema, existe um conceito chamado "tools" ou "function calling" que permitem que o LLM possa chamar um mais funções disponíveis e definidos pelo desenvolvedor.
+
+Isso permite que os LLMs sinalizem a intenção de usar uma ferramenta, como uma pesquisa na web ou uma API externa, em sua resposta. 
+
+Os LLMs não utilizam a ferramenta diretamente; em vez disso, indicam que querem usá-la. Então, os desenvolvedores devem executar a ferramenta com os argumentos fornecidos pelo LLM e inserir os resultados no sistema.
 
 Nem todos os modelos suportam Tools. Atualmente os seguintes modelos podem ser usados:
 - OpenAiChatModel
 - AzureOpenAiChatModel
 - LocalAiChatModel
 - QianfanChatModel
+
+Aqui veremos apenas o funcionamento do `SearchBot.java`.
+
+Perceba que o modelo não realiza pesquisas no Google, mas se disponibilizarmos uma ferramenta, o modelo pode sugerir que precisa executar uma busca em sua resposta.
+Assim podemos re-enviar o prompt adicionando o resultado da pesquisa no contexto.
+
+O Langchain4J já disponibiliza uma implementação padrão para esse fluxo.
+
+No WorkshopTest, descomente o teste `test_5_Tools()` e execute o comando de teste.
 
 ## Seu Gerenciador de Prompts pessoal!
