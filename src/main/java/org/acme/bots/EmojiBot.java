@@ -18,7 +18,9 @@ public class EmojiBot {
             From the movie '{{movieName}}', generate a short plot only using emojis
             that illustrates remarkable objects or moments of the movie.
         """);
-        var userMessage = emojiTemplate.apply(Map.of("movieName", movieName)).toUserMessage();
-        return chatModel.generate(userMessage).content().text();
+
+        var prompt = emojiTemplate.apply(Map.of("movieName", movieName)).toString();
+
+        return chatModel.generate(prompt);
     }
 }

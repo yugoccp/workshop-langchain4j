@@ -15,10 +15,14 @@ import java.util.stream.IntStream;
 
 public class SearchBot {
 
-    private ChatLanguageModel chatModel;
+    private GoogleSearchAssistant searchAssistant;
 
     public SearchBot(ChatLanguageModel chatModel) {
-        this.chatModel = chatModel;
+        this.searchAssistant = AiServices.builder(GoogleSearchAssistant.class)
+                .chatLanguageModel(chatModel)
+                .chatMemory(MessageWindowChatMemory.withMaxMessages(10))
+                .tools(new SearchTools())
+                .build();
     }
 
     class SearchTools {
@@ -55,13 +59,7 @@ public class SearchBot {
     }
 
     public String chat(String userMessage) {
-        var assistant = AiServices.builder(GoogleSearchAssistant.class)
-                .chatLanguageModel(chatModel)
-                .chatMemory(MessageWindowChatMemory.withMaxMessages(10))
-                .tools(new SearchTools())
-                .build();
-
-        return assistant.chat(userMessage);
+        return searchAssistant.chat(userMessage);
     }
 
 }

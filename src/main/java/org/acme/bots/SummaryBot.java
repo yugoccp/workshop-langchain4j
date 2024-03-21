@@ -6,20 +6,18 @@ import dev.langchain4j.memory.ChatMemory;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 
-public class ResumeBot {
+public class SummaryBot {
     
     private ChatLanguageModel chatModel;
     private ChatMemory chatMemory;
 
-    public ResumeBot(ChatLanguageModel chatModel) {
+    public SummaryBot(ChatLanguageModel chatModel) {
         this.chatModel = chatModel;
         chatMemory = MessageWindowChatMemory.withMaxMessages(10);
         chatMemory.add(SystemMessage.from("""
-                You are an AI skilled in analyzing user-provided information to craft professional resumes. 
-                When a user provides you with descriptions of their skills, work experience, education, and any other relevant details
-                Acknowledge each entry with a simple 'Ok.' 
-                Once the user requests a summary, synthesize all the acknowledged information into a coherent 
-                and concise resume summary that highlights the user's qualifications and strengths.
+                   As an AI designed to summarize, please follow this simple process:                                                                                                                                                            
+                   1. Confirm each piece of information provided by the user with a simple 'Ok.'
+                   2. After the user types 'Summarize,' generate a coherent and concise summary of all the information provided by the user.
                 """));
     }
 

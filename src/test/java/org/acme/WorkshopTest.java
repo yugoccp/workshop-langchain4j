@@ -1,6 +1,6 @@
 package org.acme;
 
-import org.acme.bots.ResumeBot;
+import org.acme.bots.SummaryBot;
 import org.acme.bots.DocumentBot;
 import org.acme.bots.EmojiBot;
 import org.acme.bots.SearchBot;
@@ -35,13 +35,12 @@ class WorkshopTest {
     void test_3_Memory() {
         
         var chatModel = AiModelFactory.createChatModel();
-        var memoryBot = new ResumeBot(chatModel);
+        var memoryBot = new SummaryBot(chatModel);
 
-        System.out.println(memoryBot.chat("My name is John Doe, and I have 38 years old"));
-        System.out.println(memoryBot.chat("I'm a Software Engineer with more than 8 years of experience"));
-        System.out.println(memoryBot.chat("I've delivered several Java Web applications using Quarkus for different customers from Natural Resources to Financial businesses"));
-        System.out.println(memoryBot.chat("I'm data oriented and have strong problem solving skills, also play very well with other team members"));
-        System.out.println(memoryBot.chat("Summarize for me"));
+        System.out.println(memoryBot.chat("I've build s Java application integrated with LLM"));
+        System.out.println(memoryBot.chat("I've learned from a workshop in a large technology conference"));
+        System.out.println(memoryBot.chat("Can't wait to build world changing solutions with it!"));
+        System.out.println(memoryBot.chat("Summarize"));
     }
 
     @Test
