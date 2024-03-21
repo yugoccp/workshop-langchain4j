@@ -7,13 +7,6 @@ Faça um fork do projeto do Workshop
 git clone https://github.com/yugoccp/workshop-tdc-summit-sp-2024.git
 ```
 
-OU crie um projeto novo Quarkus com o seguinte comando
-```shell
-quarkus create workshop-tdc-summit-2024
-
-cd workshop-tdc-summit-2024
-```
-
 Execute a aplicação em modo de desenvolvedor para validar que tudo ocorreu bem:
 ```shell
 ./mvnw compile quarkus:dev
