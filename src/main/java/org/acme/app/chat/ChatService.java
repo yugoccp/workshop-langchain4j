@@ -18,7 +18,7 @@ public class ChatService {
     private ChatMemory chatMemory;
 
     public void startNewChat(String selectedPrompt) {
-        chatModel = AiModelFactory.createChatModel();
+        chatModel = AiModelFactory.createChatModel(AiModelFactory.AiModelSource.OPEN_AI);
         chatMemory = MessageWindowChatMemory.withMaxMessages(10);
         chatMemory.add(SystemMessage.from(selectedPrompt));
     }

@@ -5,9 +5,16 @@ import dev.langchain4j.model.openai.OpenAiChatModel;
 
 public class AiModelFactory {
 
+    public enum AiModelSource {
+        OPEN_AI,
+        LOCAL
+    }
 
-    public static ChatLanguageModel createChatModel() {
-        return createOpenAIChatModel();
+    public static ChatLanguageModel createChatModel(AiModelSource source) {
+        return switch(source) {
+            case OPEN_AI -> createOpenAIChatModel();
+            case LOCAL -> createLocalChatModel();
+        };
     }
 
     public static ChatLanguageModel createLocalChatModel() {

@@ -23,28 +23,27 @@ public class ChatView {
     @Inject
     private PromptService promptService;
 
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    public TemplateInstance getView() {
+        var chatMessages = chatService.getMessages();
+        return chatView.data("chatMessages", chatMessages);
+    }
+
     @GET()
     @Path("newChat")
     public Response startNewChat(@QueryParam("prompt") String selectedPrompt) {
-        var promptValue = promptService.getPrompt(selectedPrompt);
-        chatService.startNewChat(promptValue);
+        var promptData = promptService.getPrompt(selectedPrompt);
+        chatService.startNewChat(promptData.text());
         return Response.temporaryRedirect(URI.create("/chat-view")).build();
     }
 
     @POST()
     @Path("send")
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance sendMessage(String message) {
-        Log.debug(message);
         chatService.chat(message);
-        var chatMessages = chatService.getMessages();
-        return chatView.data("chatMessages", chatMessages);
-    }
-
-    @GET
-    @Produces(MediaType.TEXT_HTML)
-    public TemplateInstance getView() {
         var chatMessages = chatService.getMessages();
         return chatView.data("chatMessages", chatMessages);
     }

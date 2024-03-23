@@ -3,6 +3,8 @@ body {
     height: 100vh;
     margin: 0;
     font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+    display: grid;
+    grid-template-rows: 60px 1fr 60px;
 }
 p {
     padding: .15rem 0;
@@ -27,20 +29,19 @@ p {
     padding: 0 13rem;
     background: white;
 }
+.footer-wrapper {
+    padding: 1rem 13rem;
+    background: black;
+    color: white;
+}
 .btn {
-    text-decoration: none;
-    outline: none;
     border: 0px;
     cursor: pointer;
     color: #fff;
     background-color: #89CFF0;
-    display: inline-block;
     text-align: center;
     padding: 6px;
     border-radius: .25rem;
-}
-.btn.danger {
-    background-color: #FA5F55;
 }
 .prompt-grid {
     padding: 10px;
@@ -53,19 +54,15 @@ p {
 .prompt-item {
     display: grid;
     align-items: stretch;
+    justify-self: stretch;
+    grid-template-rows: 1fr 30px;
     border: solid 1px lightgrey;
     padding: 10px;
 }
-.prompt-item-card {
-    display: grid;
-    grid-template-rows: 1fr 30px;
-    justify-self: stretch;
-}
 .prompt-item-actions {
     display: grid;
-    grid-auto-flow: column;
-    column-gap: 5px;
     justify-content: end;
+    grid-auto-flow: column;
     border-top: solid 1px lightgrey;
     padding: 6px;
 }
@@ -88,28 +85,4 @@ p {
 .chat-message-content {
     height: 80px;
     width: 100%;
-}
-.circle-plus {
-  position: relative;
-  width: 100px;
-  height: 100px;
-  background-color: #3498db;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: auto;
-}
-.circle-plus::before, .circle-plus::after {
-  content: '';
-  position: absolute;
-  background-color: #ffffff;
-}
-.circle-plus::before {
-  width: 60%;
-  height: 10%;
-}
-.circle-plus::after {
-  width: 10%;
-  height: 60%;
 }

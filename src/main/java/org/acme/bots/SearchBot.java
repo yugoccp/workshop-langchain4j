@@ -18,7 +18,7 @@ public class SearchBot {
     private GoogleSearchAssistant searchAssistant;
 
     class SearchTools {
-        @Tool("Searches Google for relevant URLs, given the query")
+        @Tool("Use Google to search for relevant URLs, given the query")
         public List<String> searchGoogle(@P("search query") String query) {
             var googleSearchURL = "https://www.google.com/search?q="+query.replace(" ", "+");
 

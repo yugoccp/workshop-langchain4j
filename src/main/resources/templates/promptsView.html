@@ -8,29 +8,26 @@
     <body>
         <div class="header-wrapper">
             <div class="header">
-                <p>Welcome to <strong>MyPrompts</strong>! Your personal Prompt Storage ;)</p>
+                <p><strong>MyPrompts</strong> Welcome to your personal Prompt Storage ;)</p>
             </div>
         </div>
         <div class="content-wrapper">
             <div class="prompt-grid">
             {#for prompt in promptList}
                 <div class="prompt-item">
-                    <div class="prompt-item-card">
-                        <div class="prompt-item-content">
-                            <h3>{prompt.name}</h3>
-                            <p>{prompt.value}</p>
-                        </div>
-                        <div class="prompt-item-actions">
-                            <a href="/prompt-view/remove?prompt={prompt.name}"><input class="btn danger" value="Remove"></a>
-                            <a href="/chat-view/newChat?prompt={prompt.name}"><input class="btn" value="Use prompt"></a>
-                        </div>
+                    <div class="prompt-item-content">
+                        <h3>{prompt.name}</h3>
+                        <p>{prompt.text}</p>
+                    </div>
+                    <div class="prompt-item-actions">
+                        <a href="/chat-view/newChat?prompt={prompt.name}"><input class="btn" value="Use prompt"></a>
                     </div>
                 </div>
             {/for}
-                <div class="prompt-item">
-                    <div class="circle-plus"></div>
-                </div>
             </div>
+        </div>
+        <div class="footer-wrapper">
+            <p>Prompts inspired from <a href="https://github.com/f/awesome-chatgpt-prompts">awesome-chatgpt-prompts</a></p>
         </div>
     </body>
 </html>
