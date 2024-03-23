@@ -40,7 +40,7 @@ O LMStudio vai disponibilizar as mesmas APIs da OpenAI para o modelo selecionado
 
 ## Fundamentos
 
-Copie o arquivo WorkshopTest.java para o seu diretório de testes `src/test/java/org/acme`.
+Copie o arquivo WorkshopITest.java para o seu diretório de testes `src/test/java/org/acme`.
 
 ### 1. Modelos
 
@@ -70,9 +70,9 @@ Se você optou por usar o serviço da OpenAI, basta alterar o código com o exem
 OpenAiChatModel.withApiKey(System.getenv("OPENAI_KEY"));
 ```
 
-No WorkshopTest, descomente o primeiro teste `test_1_Model()`.
+No WorkshopITest, descomente o primeiro teste `test_1_Model()`.
 ```java
-class WorkshopTest {
+class WorkshopITest {
    @Test
    void test_1_Model() {
       // ...
@@ -111,9 +111,9 @@ Substitua o valor do movieName com o código abaixo
 emojiTemplate.apply(Map.of("movieName", movieName));
 ```
 
-No WorkshopTest, descomente o teste `test_2_PromptTemplate()` e execute o comando de teste.
+No WorkshopITest, descomente o teste `test_2_PromptTemplate()` e execute o comando de teste.
 ```java
-class WorkshopTest {
+class WorkshopITest {
    @Test
    void test_2_PromptTemplate() {
        // ...
@@ -147,7 +147,7 @@ SystemMessage.from("""
 - Envie todas as mensagens para o chatModel: `chatMemory.messages()`
 - Adicione a resposta do modelo na memória também para ser enviado na próxima interação `chatMemory.add(aiMessage)`
 
-No WorkshopTest, descomente o teste `test_3_Memory()` e execute o comando de teste.
+No WorkshopITest, descomente o teste `test_3_Memory()` e execute o comando de teste.
 
 ### 4. Retrieval Augmented Generation (RAG)
 
@@ -203,7 +203,7 @@ public String chat(String filename, String message) {
         return documentAssistant.answer(message);
   }
 ```
-No WorkshopTest, descomente o teste `test_4_RAG()` e execute o comando de teste.
+No WorkshopITest, descomente o teste `test_4_RAG()` e execute o comando de teste.
 
 ### 5. Tools (Function Calling)
 
@@ -228,6 +228,6 @@ Assim podemos re-enviar o prompt adicionando o resultado da pesquisa no contexto
 
 O Langchain4J já disponibiliza uma implementação padrão para esse fluxo.
 
-No WorkshopTest, descomente o teste `test_5_Tools()` e execute o comando de teste.
+No WorkshopITest, descomente o teste `test_5_Tools()` e execute o comando de teste.
 
 ## Seu Gerenciador de Prompts pessoal!

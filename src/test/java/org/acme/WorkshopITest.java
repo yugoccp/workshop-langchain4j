@@ -1,5 +1,6 @@
 package org.acme;
 
+import io.quarkus.logging.Log;
 import org.acme.bots.SummaryBot;
 import org.acme.bots.DocumentBot;
 import org.acme.bots.EmojiBot;
@@ -9,7 +10,7 @@ import org.acme.factories.ContentRetrieverFactory;
 import org.acme.factories.EmbeddingFactory;
 import org.junit.jupiter.api.Test;
 
-class WorkshopTest {
+class WorkshopITest {
     
     @Test
     void test_1_Model() {
@@ -18,7 +19,7 @@ class WorkshopTest {
         
         var result = chatModel.generate("hello");
         
-        System.out.println(result);
+        Log.info(result);
     }
 
     @Test
@@ -29,7 +30,7 @@ class WorkshopTest {
 
         var result = emojiBot.generate("Titanic");
 
-        System.out.println(result);
+        Log.info(result);
     }
 
     @Test
@@ -38,10 +39,10 @@ class WorkshopTest {
         var chatModel = AiModelFactory.createChatModel();
         var memoryBot = new SummaryBot(chatModel);
 
-        System.out.println(memoryBot.chat("I've build s Java application integrated with LLM"));
-        System.out.println(memoryBot.chat("I've learned from a workshop in a large technology conference"));
-        System.out.println(memoryBot.chat("Can't wait to build world changing solutions with it!"));
-        System.out.println(memoryBot.chat("Summarize"));
+        Log.info(memoryBot.chat("I've build s Java application integrated with LLM"));
+        Log.info(memoryBot.chat("I've learned from a workshop in a large technology conference"));
+        Log.info(memoryBot.chat("Can't wait to build world changing solutions with it!"));
+        Log.info(memoryBot.chat("Summarize"));
     }
 
     @Test
@@ -50,16 +51,19 @@ class WorkshopTest {
         var chatModel = AiModelFactory.createChatModel();
         var embeddingModel = EmbeddingFactory.createEmbeddingModel();
         var embeddingStore = EmbeddingFactory.createEmbeddingStore();
-        var fileContentRetriever = ContentRetrieverFactory.createFileContentRetriever(embeddingModel, embeddingStore, "news.rss");
+        var fileContentRetriever = ContentRetrieverFactory.createFileContentRetriever(
+                                        embeddingModel,
+                                        embeddingStore,
+                                        "prompts.csv");
 
         var documentBot = new DocumentBot(chatModel, fileContentRetriever);
 
-        String result = documentBot.chat("What's new at TikTok?");
+        String result = documentBot.chat("What it says about movies?");
 
-        System.out.println(result);
+        Log.info(result);
     }
 
-    @Test
+    // @Test
     void test_5_Tools() {
 
         var chatModel = AiModelFactory.createChatModel();
@@ -67,6 +71,6 @@ class WorkshopTest {
 
         String result = agentBot.chat("What google says about Generative AI?");
 
-        System.out.println(result);
+        Log.info(result);
     }
 }
