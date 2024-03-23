@@ -1,44 +1,86 @@
-package org.acme.app;
+package org.acme.app.prompt;
 
+import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
+import org.acme.factories.ContentRetrieverFactory;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @ApplicationScoped
 public class PromptService {
 
     private static final String COMMA_DELIMITER = ";";
+    private static final String FILENAME = "prompts.csv";
 
-    private List<PromptItem> getPromptsFromCsvFile() throws IOException {
-        var promptItemList = new ArrayList<PromptItem>();
-        try (BufferedReader br = new BufferedReader(new FileReader("prompts.csv"))) {
+    public List<PromptData> getAllPrompts() {
+        var promptDataList = readCsv(FILENAME).stream()
+                .map(row -> new PromptData(row[0], row[1]))
+                .toList();
+        return promptDataList;
+    }
+
+    public String getPrompt(String promptName) {
+        if (promptName != null) {
+            return getAllPrompts().stream()
+                    .filter(p -> promptName.equals(p.name))
+                    .map(p -> p.value)
+                    .findFirst()
+                    .orElse("");
+        }
+
+        Log.error("Cannot find prompt with name: " + promptName);
+        return "";
+    }
+
+    public void removePrompt(String promptName) {
+        var promptDataList = getAllPrompts();
+        var csvRows = promptDataList.stream()
+                .filter(pd -> !promptName.equals(pd.name))
+                .map(pd -> String.format("%s; %s\n", pd.name, pd.value))
+                .toList();
+
+        writeCsv(FILENAME, csvRows);
+    }
+
+    private void writeCsv(String filename, List<String> rows) {
+        File file = getFile(filename);
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+            for (String row : rows) {
+                bw.write(row);
+            }
+        } catch (Exception e) {
+            Log.error("Error loading CSV file:" + e.getMessage());
+        }
+    }
+
+    private List<String[]> readCsv(String filename) {
+        var result = new ArrayList<String[]>();
+        File file = getFile(filename);
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(COMMA_DELIMITER);
-                promptItemList.add(new PromptItem(values[0], values[1]));
+                result.add(values);
             }
         } catch (Exception e) {
-            System.out.println("Error loading CSV file:" + e.getMessage());
-            throw e;
+            Log.error("Error loading CSV file:" + e.getMessage());
         }
 
-        return promptItemList;
+        return result;
     }
 
-    public List<PromptItem> getAllPrompts() {
-
-        List<PromptItem> prompts;
+    private static File getFile(String filename) {
+        var fileUrl = ContentRetrieverFactory.class.getClassLoader().getResource(filename);
+        File file = null;
         try {
-            prompts = getPromptsFromCsvFile();
-        } catch (IOException e) {
-            prompts = Collections.emptyList();
+            file = new File(fileUrl.toURI());
+        } catch (URISyntaxException e) {
+            Log.error("Error to open file: " + e.getMessage());
+            throw new RuntimeException(e);
         }
-
-        return prompts;
+        return file;
     }
 }

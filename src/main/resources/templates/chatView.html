@@ -2,79 +2,36 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>workshop-java-llm - 1.0.0-SNAPSHOT</title>
-        <style>
-            body {
-                margin: 0;
-                font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
-            }
-            h1, h2, h3, h4, h5, h6 {
-                margin-bottom: 0.5rem;
-                font-weight: 400;
-                line-height: 1.5;
-            }
-            h1 { font-size: 2.25rem; }
-            h2 { font-size: 1.6rem }
-            h3 { font-size: 1.5rem }
-            h4 { font-size: 1.4rem }
-            h5 { font-size: 1.25rem }
-            h6 { font-size: 1rem }
-            p {
-                padding: .15rem 0;
-                margin: 0;
-                line-height: 1.3rem;
-            }
-            a {
-                text-decoration: underline;
-                color: #1259A5;
-            }
-            a:hover, a:active { color: #c00; }
-            .grid {
-                padding: 10px;
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                column-gap: 5px;
-                row-gap: 5px;
-                clear: both;
-            }
-            .grid-item {
-                border: solid 1px lightgrey;
-                justify-self: stretch;
-            }
-            .header-wrapper {
-                padding: 0 13rem;
-                background: black;
-            }
-            .content-wrapper {
-                padding: 0 13rem;
-                background: white;
-            }
-            .header {
-                background-position: 0 1rem;
-                min-height: 60px;
-                grid-column: span 12;
-            }
-            .header p {
-                color: white;
-                padding-top: 1rem;
-            }
-        </style>
+        <title>workshop-tdc-summit-2024</title>
+        <link rel="stylesheet" href="/style.css">
     </head>
     <body>
         <div class="header-wrapper">
             <div class="header">
-                <p>Welcome to MyPrompts! Your personal Prompt Storage ;)</p>
+                <div class="header-right">
+                    <p>Welcome to <strong>MyPrompts</strong>! Your personal Prompt Storage ;)</p>
+                </div>
+                <div class="header-left">
+                    <a href="/prompt-view"><input class="btn" value="Go to Prompts"></a>
+                </div>
             </div>
         </div>
         <div class="content-wrapper">
-            <div class="grid">
-            {#for prompt in promptList}
-                <div class="grid-item">
-                    <h3>{prompt.name}</h3>
-                    <p>{prompt.value}</p>
-                    <button>Use prompt</button>
+            <div class="chat-view">
+                <div class="chat-history">
+                {#for message in chatMessages}
+                    <div class="chat-history-item">
+                        <h5>{message.type}</h5>
+                        <div class="chat-history-item-text">{message.text}</div>
+                    </div>
+                {/for}
                 </div>
-            {/for}
+                <div class="chat-input">
+                    <form action="/chat-view/send" method="post">
+                        <textarea class="chat-message-content" id="message" name="message" maxlength="300" ></textarea>
+                        <input class="btn" type="submit" value="Submit">
+                    </form>
+                </div>
             </div>
         </div>
     </body>
