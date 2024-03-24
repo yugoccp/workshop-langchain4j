@@ -8,34 +8,40 @@
     <body>
         <div class="header-wrapper">
             <div class="header">
-                <div class="header-right">
-                    <p><strong>MyPrompts</strong> Welcome to your personal Prompt Storage ;)</p>
+                <div>
+                    <p><strong>MyAssistants</strong> Your personal Assistant Storage ;)</p>
                 </div>
-                <div class="header-left">
-                    <a href="/prompt-view"><input class="btn" value="Go to Prompts"></a>
+                <div class="left">
+                    <a href="https://thedevconf.com/tdc/2024/summit-sao-paulo/#"><img  src="/branding-tdc-fundo-escuro.png"></a>
                 </div>
             </div>
         </div>
         <div class="content-wrapper">
             <div class="chat-view">
+                <div class="chat-header">
+                    <a href="/prompt-view">< Back to Prompts</a>
+                </div>
                 <div class="chat-history">
                 {#for message in chatMessages}
                     <div class="chat-history-item">
-                        <div>{message.type}</div>
+                        <div class="title">{message.type}</div>
                         <pre>{message.text}</pre>
                     </div>
                 {/for}
                 </div>
                 <div class="chat-input">
                     <form action="/chat-view/send" method="post" enctype="multipart/form-data">
-                        <textarea class="chat-message-content" id="text" name="text" maxlength="300" ></textarea>
+                        <textarea class="chat-input-text" id="text" name="text" maxlength="300" ></textarea>
                         <input class="btn" type="submit" value="Submit">
+                        <div class="model-options left">
+                            <input type="radio" id="local" name="modelSource" value="LOCAL" checked />
+                            <label for="local">Local</label>
+                            <input type="radio" id="openai" name="modelSource" value="OPEN_AI" />
+                            <label for="openai">OpenAI</label>
+                        </div>
                     </form>
                 </div>
             </div>
-        </div>
-        <div class="footer-wrapper">
-            <p>Prompts inspired from <a href="https://www.learnprompt.org/chat-gpt-prompts-for-coding/">learnprompt.org</a></p>
         </div>
     </body>
 </html>

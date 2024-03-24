@@ -5,24 +5,24 @@ import java.util.Map;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.input.PromptTemplate;
 
-public class EmojiBot {
+public class DebuggerAssistant {
     
     private ChatLanguageModel chatModel;
 
-    public EmojiBot(ChatLanguageModel chatModel) {
+    public DebuggerAssistant(ChatLanguageModel chatModel) {
         this.chatModel = chatModel;
     }
 
-    public String generate(String movieName) {
+    public String generate(String codeSnippet) {
 
         // Create a PromptTemplate for model instructions.
         var emojiTemplate = PromptTemplate.from("""
-            From the movie '{{movieName}}', generate a short plot only using emojis
-            that illustrates remarkable objects or moments of the movie.
+           Can you identify any bugs in this Java code snippet? 
+           {{codeSnippet}}
         """);
 
         // Replace template variables with the movieName.
-        var userMessage = emojiTemplate.apply(Map.of("movieName", movieName)).toUserMessage();
+        var userMessage = emojiTemplate.apply(Map.of("codeSnippet", codeSnippet)).toUserMessage();
 
         // Send the template result to the model and return the model response.
         return chatModel.generate(userMessage).content().text();

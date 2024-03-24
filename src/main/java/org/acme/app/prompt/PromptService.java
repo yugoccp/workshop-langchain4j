@@ -19,7 +19,7 @@ public class PromptService {
 
     public List<PromptRecord> getAllPrompts() {
         var promptDataList = readCsv(DEFAULT_FILE).stream()
-                .map(row -> new PromptRecord(row[0], row[1], row[2]))
+                .map(row -> new PromptRecord(row[0], row[1]))
                 .toList();
         return promptDataList;
     }

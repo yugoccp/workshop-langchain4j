@@ -1,24 +1,10 @@
-Error Message Clarification;I’m getting this error message when running my [language] code: [error message]. What does it mean?;#error
-Compiler Error Explanation;Can you explain this [language] compiler error: [error message]?;#error
-Runtime Error Assistance;I don’t understand this [language] runtime error: [error message]. Can you help?;#error
-Error Message Analysis;I got this error message in my [language] code: [error message]. What could be causing it?;#error
-Error Message Interpretation;I don’t understand what this [language] error message means: [error message]. Can you explain it to me?;#error
-Error Resolution Guidance;While running my [language] code, I encountered this error: [error message]. How can I resolve it?;#error
-Error Message Understanding and Fix;I encountered this error message when running my [language] code: [error message]. What does it mean and how can I fix it?;#error
-Implementation Error Explanation;I received the following error message when trying to implement [task] in [language]: [error message]. Can you explain what’s going wrong?;#error
-Error Message Comprehension and Solutions;Help me understand this error message from my [language] code: [error message] and suggest possible solutions.;#error
-Error Message Interpretation and Resolution;I’m getting this error message: [error message] when I try to run my [language] code: [code snippet]. What does it mean and how can I fix it?;#error
-Function Execution Error Explanation;Could you explain the meaning of this [language] error message: [error message] that occurs when executing the function: [code snippet] using [input data]?;#error
-Task Error Resolution;I encountered this error message: [error message] while working with [language] on [task]. Could you explain what’s causing it and suggest a way to resolve it?;#error
-Design Pattern Implementation Inquiry;What is the best way to implement the [design pattern] pattern in [language]?;#design
-Design Pattern Functionality Explanation;Can you explain how the [design pattern] pattern works in [language]?;#design
-Design Pattern Usage Query;How do I use the [design pattern] design pattern in this [language] code: [code snippet]?;#design
-Design Pattern Example Request;Could you provide an example of using the [design pattern] pattern in a [language] project?;#design
-Design Pattern Application Query;How could I apply the [design pattern] pattern to this [language] code: [code snippet]?;#design
-Benefits of Design Pattern Usage;What are the benefits of using the [design pattern] pattern in a [language] application?;#design
-Design Pattern Implementation Example;Provide an example of how to implement the [design pattern] in [language] for a software component that handles [task].;#design
-Design Pattern Application for Problem;What is the best way to apply the [design pattern] in [language] to solve [problem] in the given code: [code snippet]?;#design
-Design Pattern for Code Improvement;Explain how the [design pattern] can be used to improve the following [language] code: [code snippet] used in [context].;#design
-Design Pattern Implementation with Constraints;Could you show me how to implement the [design pattern] in [language] for a [specific system component] while considering [specific constraints]?;#design
-Design Pattern Application for Specific Problem;Explain how to apply the [design pattern] in [language] to solve [specific problem] in the context of [application type]. Also, provide a code example.;#design
-Code Refactoring with Design Pattern;I have this [language] code: [code snippet]. How could I refactor it to follow the [design pattern] and improve [specific aspect]?;#design
+Debugging Assistance;I encountered [errorDescription] when I was trying to [taskDescription]. Here's a snippet of the Java code I'm working on: [codeSnippet]. Can you help me identify the issue and suggest a solution?
+Code Optimization;I have a piece of Java code that accomplishes [taskDescription]. However, I believe it can be optimized for better performance. Here's the code: [codeSnippet]. Can you suggest optimizations or a more efficient approach?
+API Integration Guidance;I'm trying to integrate the [apiName] into my Java web application but I'm unsure about the best practices for doing so. Here's my current approach: [currentApproach]. Could you provide advice or improvements for integrating this API?
+Security Best Practices;I am working on a Java web application that deals with sensitive data. I want to ensure that it's secure against common vulnerabilities. What are the best security practices I should follow, and how can I implement them in my application?
+Framework-Specific Question;I'm using the [frameworkName] for my web application. I'm trying to achieve [goalDescription], but I'm stuck. Here's what I've tried so far: [currentApproach]. Can you guide me on how to proceed?
+Testing Strategy;I want to implement comprehensive testing for my Java web application, covering unit tests, integration tests, and E2E tests. Can you suggest a testing strategy or framework that works well with Java web applications, especially for [frameworkOrLibrary]?
+Performance Analysis;My Java web application is experiencing slow performance in [scenarioDescription]. I suspect the bottleneck might be [bottleneckSuspect]. How can I effectively analyze and improve the performance in this area?
+Feature Implementation Blueprint;I'm planning to add a new feature to my Java web application: [featureDescription]. Can you provide a high-level blueprint or best practices for implementing this feature, considering scalability and maintainability?
+Code Review Request;I've written some Java code for [featureOrTask]. Before moving forward, I'd like a code review to ensure it follows best practices and doesn't have any major flaws. Here's the code: [codeSnippet]. Can you review it and provide feedback?
+Learning Resource Request;I'm looking to improve my skills in [technologyOrConcept]. Can you recommend comprehensive and up-to-date resources or tutorials that cover this topic in depth?

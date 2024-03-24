@@ -95,7 +95,7 @@ Para criar Prompts reutilizáveis, podemos usar os Prompt Templates, uma linguag
 
 Isso ajuda a modificar apenas partes específicas dos prompts conforme necessário.
 
-Vamos criar uma classe chamado `org.acme.bots.EmojiBot.java`.
+Vamos criar uma classe chamado `org.acme.bots.DebuggerAssistant.java`.
 - Essa classe deve receber o modelo como parâmetro no construtor.
 - Crie um método chamado `generate(String movieName)` que recebe um nome de um filme como parâmetro e retorna uma String com o output do modelo.
 - Utilize o Prompt Template abaixo para descrever as instruções para o modelo.
@@ -133,7 +133,7 @@ Mas como o ChatGPT e outros serviços de chat mantém uma conversa coerente?
 
 Para manter o contexto da conversa, é necessário re-enviar todas as mensagens anteriores a cada novo Prompt que escrevemos para o modelo.
 
-Veremos como isso funciona com o exemplo a seguir. Vamos implementar a classe `org.acme.bots.SummaryBot.java`
+Veremos como isso funciona com o exemplo a seguir. Vamos implementar a classe `org.acme.bots.ChatAssistant.java`
 - Instancie o `chatMemory` no construtor da classe, com uma memória de 10 mensagens: `MessageWindowChatMemory.withMaxMessages(10)`
 - Adicione uma SystemMessage na memória para ser uma instrução fixa do SummaryBot:
 ```java

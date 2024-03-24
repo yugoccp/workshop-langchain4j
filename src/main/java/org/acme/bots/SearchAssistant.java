@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class SearchBot {
+public class SearchAssistant {
 
     private GoogleSearchAssistant searchAssistant;
 
@@ -49,7 +49,7 @@ public class SearchBot {
         String chat(String userMessage);
     }
 
-    public SearchBot(ChatLanguageModel chatModel) {
+    public SearchAssistant(ChatLanguageModel chatModel) {
         this.searchAssistant = AiServices.builder(GoogleSearchAssistant.class)
                 .chatLanguageModel(chatModel)
                 .chatMemory(MessageWindowChatMemory.withMaxMessages(10))

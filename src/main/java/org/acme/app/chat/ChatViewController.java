@@ -9,7 +9,6 @@ import jakarta.ws.rs.core.Response;
 import org.acme.app.prompt.PromptService;
 
 import java.net.URI;
-import java.util.Map;
 
 @Path("chat-view")
 public class ChatViewController {
@@ -28,10 +27,10 @@ public class ChatViewController {
     }
 
     @GET()
-    @Path("newChat")
-    public Response startNewChat(@QueryParam("prompt") String selectedPrompt) {
+    @Path("createChat")
+    public Response createChat(@QueryParam("prompt") String selectedPrompt) {
         var promptData = promptService.getPrompt(selectedPrompt);
-        chatService.startNewChat(promptData.text());
+        chatService.createChat(promptData.text());
         return Response.temporaryRedirect(URI.create("/chat-view")).build();
     }
 
@@ -39,8 +38,8 @@ public class ChatViewController {
     @Path("send")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.TEXT_HTML)
-    public TemplateInstance sendMessage(@FormParam("text") String messageText) {
-        chatService.chat(messageText);
+    public TemplateInstance sendMessage(@FormParam("text") String messageText, @FormParam("modelSource") ChatAiModelTypeEnum modelSource) {
+        chatService.chat(messageText, modelSource);
         var chatMessages = chatService.getMessages();
         return chatView.data("chatMessages", chatMessages);
     }

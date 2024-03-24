@@ -13,11 +13,9 @@ import java.util.List;
 
 @ApplicationScoped
 public class ChatService {
-    private ChatLanguageModel chatModel;
     private ChatMemory chatMemory;
 
-    public void startNewChat(String selectedPrompt) {
-        chatModel = AiModelFactory.createChatModel(AiModelFactory.AiModelSource.OPEN_AI);
+    public void createChat(String selectedPrompt) {
         chatMemory = MessageWindowChatMemory.withMaxMessages(10);
         chatMemory.add(SystemMessage.from(selectedPrompt));
     }
@@ -26,10 +24,17 @@ public class ChatService {
         return chatMemory.messages();
     }
 
-    public void chat(String message) {
+    public void chat(String message, ChatAiModelTypeEnum source) {
+        var chatModel = createChatModel(source);
         chatMemory.add(UserMessage.from(message));
         var response = chatModel.generate(chatMemory.messages());
         chatMemory.add(response.content());
     }
 
+    private ChatLanguageModel createChatModel(ChatAiModelTypeEnum source) {
+        return switch(source) {
+            case OPEN_AI -> AiModelFactory.createOpenAIChatModel();
+            case LOCAL -> AiModelFactory.createLocalChatModel();
+        };
+    }
 }
