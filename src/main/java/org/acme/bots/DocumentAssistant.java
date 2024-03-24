@@ -13,16 +13,18 @@ public class DocumentAssistant {
     }
 
     public DocumentAssistant(ChatLanguageModel chatModel, ContentRetriever contentRetriever) {
-        // Build a RAG assistant to select relevant context from the document and add in the user prompt.
-        this.documentAiService = buildDocumentAssistant(chatModel, contentRetriever);
+        // Build DocumentAiService
+        this.documentAiService = buildDocumentAiService(chatModel, contentRetriever);
 
     }
 
     public String chat(String message) {
+        // Use DocumentAiService to select relevant context from the document
+        // and add them to the user prompt.
         return documentAiService.chat(message);
     }
 
-    private DocumentAiService buildDocumentAssistant(ChatLanguageModel chatModel, ContentRetriever contentRetriever) {
+    private DocumentAiService buildDocumentAiService(ChatLanguageModel chatModel, ContentRetriever contentRetriever) {
         return AiServices.builder(DocumentAiService.class)
                 .chatLanguageModel(chatModel)
                 .contentRetriever(contentRetriever)
