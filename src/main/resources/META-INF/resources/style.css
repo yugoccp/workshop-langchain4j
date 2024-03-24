@@ -7,7 +7,6 @@ body {
     grid-template-rows: 60px 1fr 60px;
 }
 p {
-    padding: .15rem 0;
     margin: 0;
     line-height: 1.3rem;
     font-weight: 300;
@@ -71,16 +70,25 @@ p {
     background: white;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr 100px;
+    grid-template-rows: 1fr 120px;
 }
 .chat-history {
     display: grid;
 }
 .chat-history-item {
     padding: 6px;
+    margin-bottom: 13px;
 }
-.chat-history-item-text {
-    word-break: break-all;
+.chat-history-item div {
+    font-weight: 600;
+}
+.chat-history-item pre {
+    margin: 0px;
+    white-space: pre-wrap;       /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;
 }
 .chat-message-content {
     height: 80px;

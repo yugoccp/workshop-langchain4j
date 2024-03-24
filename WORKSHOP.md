@@ -2,7 +2,7 @@
 
 ## Crie um projeto Quarkus
 
-Faça um fork do projeto do Workshop
+Faça um fork do projeto do Workshop e clone na sua máquina
 ```shell
 git clone https://github.com/yugoccp/workshop-tdc-summit-sp-2024.git
 ```

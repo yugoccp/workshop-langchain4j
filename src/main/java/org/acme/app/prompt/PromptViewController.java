@@ -10,11 +10,9 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
 @Path("prompt-view")
-public class PromptView {
-
+public class PromptViewController {
     @Inject
     private Template promptsView;
-
     @Inject
     private PromptService promptService;
 

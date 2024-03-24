@@ -33,7 +33,7 @@ public class ContentRetrieverFactory {
         return EmbeddingStoreContentRetriever.builder()
                 .embeddingStore(embeddingStore)
                 .embeddingModel(embeddingModel)
-                .maxResults(2)
+                .maxResults(5)
                 .minScore(0.5)
                 .build();
     }

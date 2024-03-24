@@ -8,18 +8,18 @@ import java.io.File;
 import java.io.FileReader;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 @ApplicationScoped
 public class PromptService {
-
     private static final String COMMA_DELIMITER = ";";
     private static final String DEFAULT_FILE = "prompts.csv";
 
     public List<PromptRecord> getAllPrompts() {
         var promptDataList = readCsv(DEFAULT_FILE).stream()
-                .map(row -> new PromptRecord(row[0], row[1]))
+                .map(row -> new PromptRecord(row[0], row[1], row[2]))
                 .toList();
         return promptDataList;
     }

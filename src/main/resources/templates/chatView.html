@@ -21,21 +21,21 @@
                 <div class="chat-history">
                 {#for message in chatMessages}
                     <div class="chat-history-item">
-                        <h5>{message.type}</h5>
-                        <div class="chat-history-item-text">{message.text}</div>
+                        <div>{message.type}</div>
+                        <pre>{message.text}</pre>
                     </div>
                 {/for}
                 </div>
                 <div class="chat-input">
-                    <form action="/chat-view/send" method="post">
-                        <textarea class="chat-message-content" id="message" name="message" maxlength="300" ></textarea>
+                    <form action="/chat-view/send" method="post" enctype="multipart/form-data">
+                        <textarea class="chat-message-content" id="text" name="text" maxlength="300" ></textarea>
                         <input class="btn" type="submit" value="Submit">
                     </form>
                 </div>
             </div>
         </div>
         <div class="footer-wrapper">
-            <p>Prompts inspired from <a href="https://github.com/f/awesome-chatgpt-prompts">awesome-chatgpt-prompts</a></p>
+            <p>Prompts inspired from <a href="https://www.learnprompt.org/chat-gpt-prompts-for-coding/">learnprompt.org</a></p>
         </div>
     </body>
 </html>

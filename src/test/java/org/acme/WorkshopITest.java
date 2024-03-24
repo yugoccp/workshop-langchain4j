@@ -60,13 +60,13 @@ class WorkshopITest {
     @Test
     void test_4_RAG() {
         
-        var chatModel = AiModelFactory.createChatModel(AiModelFactory.AiModelSource.LOCAL);
+        var chatModel = AiModelFactory.createChatModel(AiModelFactory.AiModelSource.OPEN_AI);
         var embeddingModel = EmbeddingFactory.createEmbeddingModel();
         var embeddingStore = EmbeddingFactory.createEmbeddingStore();
         var fileContentRetriever = ContentRetrieverFactory.createFileContentRetriever(
                                         embeddingModel,
                                         embeddingStore,
-                                        "wired.rss");
+                                        "hckrnews.html");
 
         var documentBot = new DocumentBot(chatModel, fileContentRetriever);
 

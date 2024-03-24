@@ -13,7 +13,6 @@ import java.util.List;
 
 @ApplicationScoped
 public class ChatService {
-
     private ChatLanguageModel chatModel;
     private ChatMemory chatMemory;
 
