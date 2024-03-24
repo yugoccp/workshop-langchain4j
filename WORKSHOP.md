@@ -15,17 +15,24 @@ Execute a aplicação em modo de desenvolvedor para validar que tudo ocorreu bem
 ## Adicione as dependências do Langchain4J
 Adicione as dependências do [Langchain4J](https://docs.langchain4j.dev/get-started) no seu pom.xml
 ```xml
-<!-- Add dependency at your pom.xml -->
-<dependency>
-    <groupId>dev.langchain4j</groupId>
-    <artifactId>langchain4j</artifactId>
-    <version>0.28.0</version>
-</dependency>
-<dependency>
-    <groupId>dev.langchain4j</groupId>
-    <artifactId>langchain4j-open-ai</artifactId>
-    <version>0.28.0</version>
-</dependency>
+<properties>
+   ...
+    <langchain4j.version>0.28.0</langchain4j.version>
+</properties>
+...
+<dependencies>
+    ...
+   <dependency>
+       <groupId>dev.langchain4j</groupId>
+       <artifactId>langchain4j</artifactId>
+       <version>${langchain4j.version}</version>
+   </dependency>
+   <dependency>
+       <groupId>dev.langchain4j</groupId>
+       <artifactId>langchain4j-open-ai</artifactId>
+       <version>${langchain4j.version}</version>
+   </dependency>
+</dependencies>
 ```
 
 ## Inicie o servidor LMStudio!
@@ -40,8 +47,6 @@ O LMStudio vai disponibilizar as mesmas APIs da OpenAI para o modelo selecionado
 
 ## Fundamentos
 
-Copie o arquivo WorkshopITest.java para o seu diretório de testes `src/test/java/org/acme`.
-
 ### 1. Modelos
 
 Atualmente, existem muitos modelos de linguagem grande (LLM) disponíveis, que se diferenciam em tamanho, desempenho e finalidade. 
@@ -53,36 +58,34 @@ Da mesma forma que o código aberto é compartilhado no GitHub, esses modelos po
 O LMStudio, por exemplo, utiliza o HuggingFace para disponibilizar os modelos. 
 
 Vamos criar uma classe Java chamado `org.acme.factories.AiModelFactory.java`
-- Essa classe vai ter um método estático `createChatModel()` que retorna um ChatLanguageModel (do Langchain4J).
-- Para criar o modelo, vamos conectar com o LMStudio utilizando o Langchain4J para ajudar :)
-- Vamos usar o builder do `OpenAiChatModel` e passar a URL do LMStudio
+- Essa classe vai ter dois métodos estáticos `createLocalChatModel()` e `createOpenAiChatModel()`
+- Vamos usar o builder do `OpenAiChatModel` para criar os modelos.
 - A `apiKey` nesse caso pode ser ignorado mas ainda deve ser definido um valor para o builder.
-ß
+
+Para conectar com modelos locais (LMStudio), implemente createLocalChatModel com o seguinte código:
 ```java
 OpenAiChatModel.builder()
-    .baseUrl("http://localhost:1234/v1")
-    .apiKey("ignore")
-    .build();
+       .baseUrl("http://localhost:1234/v1")
+       .apiKey("ignore")
+       .logRequests(true)
+       .timeout(Duration.ofSeconds(300))
+       .build();
 ```
 
-Se você optou por usar o serviço da OpenAI, basta alterar o código com o exemplo abaixo:
+Para conectar com modelos da OpenAI, implemente createOpenAiChatModel com o seguinte código:
 ```java
-OpenAiChatModel.withApiKey(System.getenv("OPENAI_KEY"));
+OpenAiChatModel.builder()
+        .apiKey(System.getenv("OPENAI_KEY"))
+        .logRequests(true)
+        .build();
 ```
 
-No WorkshopITest, descomente o primeiro teste `test_1_Model()`.
+Para validar se estamos conectando corretamente ao modelo, execute o primeiro teste `test_1_Model()` nos testes WorkshopLocalITest e WorkshopOpenAiITest.
 ```java
-class WorkshopITest {
-   @Test
-   void test_1_Model() {
-      // ...
-   }
+@Test
+void test_1_Model() {
+   // ...
 }
-```
-
-Para validar se estamos conectando corretamente ao modelo, você pode executar o teste pela sua IDE ou com o comando Quarkus:
-```shell
-quarkus test
 ```
 
 Funcionando?! :) Então vamos seguir!
@@ -95,33 +98,23 @@ Para criar Prompts reutilizáveis, podemos usar os Prompt Templates, uma linguag
 
 Isso ajuda a modificar apenas partes específicas dos prompts conforme necessário.
 
-Vamos criar uma classe chamado `org.acme.bots.DebuggerAssistant.java`.
-- Essa classe deve receber o modelo como parâmetro no construtor.
-- Crie um método chamado `generate(String movieName)` que recebe um nome de um filme como parâmetro e retorna uma String com o output do modelo.
-- Utilize o Prompt Template abaixo para descrever as instruções para o modelo.
+Abra a classe chamada `org.acme.bots.DebuggerAssistant.java`.
+- Implemente o método `generate(String movieName)` com o Prompt Template abaixo para descrever as instruções para o modelo.
 ```java
 var emojiTemplate = PromptTemplate.from("""
-   From the movie '{{movieName}}', generate a short plot only using emojis
-   that illustrates remarkable objects or moments of the movie.
+   Can you identify any bugs in this Java code snippet? 
+   {{codeSnippet}}
 """);
 ```
 
-Substitua o valor do movieName com o código abaixo
+Substitua o valor do codeSnippet com o código abaixo
 ```java
-emojiTemplate.apply(Map.of("movieName", movieName));
+emojiTemplate.apply(Map.of("codeSnippet", codeSnippet));
 ```
 
-No WorkshopITest, descomente o teste `test_2_PromptTemplate()` e execute o comando de teste.
-```java
-class WorkshopITest {
-   @Test
-   void test_2_PromptTemplate() {
-       // ...
-   }
-}
-```
+Finalmente, valide a implementação executando o teste `test_2_PromptTemplate()`.
 
-Aproveite para ver resultados de diferentes filmes e avaliar a "destreza" do modelo =)
+Aproveite para ver resultados de diferentes códigos e avaliar a "destreza" do modelo =)
 
 ### 3. Memória
 
@@ -134,38 +127,37 @@ Mas como o ChatGPT e outros serviços de chat mantém uma conversa coerente?
 Para manter o contexto da conversa, é necessário re-enviar todas as mensagens anteriores a cada novo Prompt que escrevemos para o modelo.
 
 Veremos como isso funciona com o exemplo a seguir. Vamos implementar a classe `org.acme.bots.ChatAssistant.java`
-- Instancie o `chatMemory` no construtor da classe, com uma memória de 10 mensagens: `MessageWindowChatMemory.withMaxMessages(10)`
-- Adicione uma SystemMessage na memória para ser uma instrução fixa do SummaryBot:
-```java
-SystemMessage.from("""
-    You are an AI skilled in analyzing user-provided information to generate coherent and concise summary. 
-    When a user provides you with descriptions, acknowledge with an 'Ok.' 
-    Once the user requests a summary, synthesize all the acknowledged information into a coherent and concise description.
-    """)
-```
-- No método `chat()`, adicione cada mensagem do usuário no chatMemory `chatMemory.add(UserMessage.from(message))`
-- Envie todas as mensagens para o chatModel: `chatMemory.messages()`
-- Adicione a resposta do modelo na memória também para ser enviado na próxima interação `chatMemory.add(aiMessage)`
+- Instancie o `chatMemory` no construtor da classe com uma memória de 10 mensagens: `MessageWindowChatMemory.withMaxMessages(10)`
+- Implemente o método `chat()`
+  - Adicione cada mensagem do usuário no chatMemory `chatMemory.add(UserMessage.from(message))`
+  - Gere uma resposta com o chatModel enviando todas as mensagens `chatMemory.messages()`
+  - Adicione a resposta do modelo na memória também para ser enviado na próxima interação `chatMemory.add(aiMessage)`
+- Retorne a  resposta do modelo
 
-No WorkshopITest, descomente o teste `test_3_Memory()` e execute o comando de teste.
+Valide a implementação utilizando o teste `test_3_Memory()`.
 
 ### 4. Retrieval Augmented Generation (RAG)
 
-Os modelos não podem usar informações que não foram incluídas no seu treinamento. Além disso, eles têm um limite no tamanho do input que conseguem analisar de uma vez, e processar inputs grandes demora mais tempo.
+Para utilizar contextos muito grandes, como um livro, ou uma base de dados mais volumosa, não podemos simplesmente enviar tudo no prompt do modelo.
 
-E quando precisamos lidar com muitas informações ao mesmo tempo? Como analisar um livro ou um artigo longo? O que podemos fazer? 
+Vimos que os modelos têm um limite no tamanho do input que conseguem analisar de uma vez, e processar inputs grandes demora mais tempo.
 
-Uma solução é utilizar o RAG, ou Retrieval-Augmented Generation, uma técnica de inteligência artificial que combina a recuperação de informações com a geração de texto. 
+Então o que podemos fazer? 
 
-Funciona da seguinte forma:
-- Primeiro, transformamos a fonte de dados em vetores (embeddings) com a ajuda de um modelo de vetores, e armazenamos o resultado.
-- Segundo, ao receber um prompt de usuário, o sistema busca da base de vetores as informações relevantes ao que foi solicitado.
-- Em seguida, usa essas informações recuperadas como contexto adicional para gerar uma resposta mais precisa e informativa. 
+Uma solução é utilizar o RAG, ou Retrieval-Augmented Generation, uma técnica que combina a recuperação de informações com a geração de texto. 
+
+Basicamente, o RAG se divide em duas etapas:
+1. Organizar o contexto, de forma que eu possa recuperar o que é relevante, dado um input
+2. Ao receber um prompt dp usuário, buscar apenas os trechos relevantes do contexto para adicionar no prompt, antes de enviar para o modelo processar.
 
 Essencialmente, o RAG seleciona e fornece somente as informações relevantes do contexto para o input do usuário. 
 Assim, o modelo recebe apenas o necessário para processar o input, evitando um processamento pesado ou exceder o limite de tokens do modelo.
 
-Para esse exercício, precisaremos adicionar uma nova dependência no projeto para o Embedding Model:
+Para organizar o contexto, precisaremos usar outro tipo de modelo, chamado Embedding Models. 
+
+Os Embedding Models são modelos de NLP (Natural Language Processing) que transformam texto em vetores, para que possamos encontrar sentenças relacionadas.
+
+Para esse exercício, precisaremos adicionar uma nova dependência no projeto para usar o Embedding Model:
 ```xml
 <dependency>
    <groupId>dev.langchain4j</groupId>
@@ -173,61 +165,49 @@ Para esse exercício, precisaremos adicionar uma nova dependência no projeto pa
    <version>0.28.0</version>
 </dependency>
 ```
+- No construtor da classe `DocumentAssistant.java`, instancie o documentAssistant com o método `buildDocumentAssistant()`
+- Implemente o método `chat()` apenas chamando o `documentAssistant.chat()`.
 
-- Crie uma classe com o nome `org.acme.factories.EmbeddingFactory`
-- Por simplicidade, trabalharemos com instâncias em memória. Adicione os métodos abaixo para essa classe:
-```java
-public static EmbeddingModel createEmbeddingModel() {
-     return new AllMiniLmL6V2EmbeddingModel();
- }
+No teste `test_4_RAG()` utilizamos o arquivo resources/hckrnews.html (notícias do Hacker News) como contexto para realizarmos perguntas ao modelo.
 
- public static EmbeddingStore createEmbeddingStore() {
-     return new InMemoryEmbeddingStore();
- }
-```
-- Implemente o método `chat(String filename, String message)` da classe `DocumentBot.java`
-```java 
-public String chat(String filename, String message) {
-        // Transform single file content into chunks of text segments.
-        var segments = createTextSegments(filename);
+Execute o teste e avalie o resultado. 
 
-        // Transform segments into embeddings (vectors)
-        var embeddings = createEmbeddings(segments);
-
-        // Store embeddings with the corresponding segments
-        storeEmbeddings(embeddings, segments);
-
-        // Build RAG assistant which filters context from the document to add to user prompt
-        var documentAssistant = buildDocumentAssistant(chatModel, embeddingModel, embeddingStore);
-
-        return documentAssistant.answer(message);
-  }
-```
-No WorkshopITest, descomente o teste `test_4_RAG()` e execute o comando de teste.
+Por simplicidade, mantive a construção de algumas etapas para esse exercício. 
+Aproveite para explorar a implementação das classes utilitárias para melhor compreensão do mecanismos do RAG.
 
 ### 5. Tools (Function Calling)
 
-Assim como o LLM por padrão não tem acesso à conhecimento externos, eles também não tem a capacidade de executar ações externas.
+Os LLMs são úteis para analisar dados e sugerir ações. Contudo, eles não podem realizar ações no mundo externo diretamente. 
 
-Para resolver esse problema, existe um conceito chamado "tools" ou "function calling" que permitem que o LLM possa chamar um mais funções disponíveis e definidos pelo desenvolvedor.
+Para contornar essa limitação, foi desenvolvido o conceito de "Tools" ou "Function Calls". 
 
-Isso permite que os LLMs sinalizem a intenção de usar uma ferramenta, como uma pesquisa na web ou uma API externa, em sua resposta. 
+Isso permite que os LLMs indiquem a necessidade de realizar uma ação específica, como uma busca na internet, sem fazer a ação por si mesmos. 
 
-Os LLMs não utilizam a ferramenta diretamente; em vez disso, indicam que querem usá-la. Então, os desenvolvedores devem executar a ferramenta com os argumentos fornecidos pelo LLM e inserir os resultados no sistema.
+O modelo simplesmente sugere que uma ferramenta externa deveria ser usada. 
 
-Nem todos os modelos suportam Tools. Atualmente os seguintes modelos podem ser usados:
+Cabe aos desenvolvedores implementar e executar essas ações externas com base nas instruções do LLM, retornando os resultados ao modelo para continuação do processo.
+
+O Langchain4J já implmenta esse fluxo, mas nem todos os modelos suportam Tools. Atualmente os seguintes modelos podem ser usados:
 - OpenAiChatModel
 - AzureOpenAiChatModel
 - LocalAiChatModel
 - QianfanChatModel
 
-Aqui veremos apenas o funcionamento do `SearchBot.java`.
+O `SearchAssistant.java` possibilita que o modelo faça buscas no Google através da ferramenta `SearchTools.searchGoogle`. 
 
-Perceba que o modelo não realiza pesquisas no Google, mas se disponibilizarmos uma ferramenta, o modelo pode sugerir que precisa executar uma busca em sua resposta.
-Assim podemos re-enviar o prompt adicionando o resultado da pesquisa no contexto.
+Quando o modelo determina a necessidade de uma pesquisa no Google, ele indica isso na resposta. 
 
-O Langchain4J já disponibiliza uma implementação padrão para esse fluxo.
+A pesquisa é então realizada, e o resultado é incorporado ao contexto para as próximas interações. 
 
-No WorkshopITest, descomente o teste `test_5_Tools()` e execute o comando de teste.
+Para ver esse processo em ação, execute o teste `test_5_Tools()`.
 
-## Seu Gerenciador de Prompts pessoal!
+## Construa Seu Gerenciador de Assistentes pessoal!
+
+MyAssistants é um gerenciador de assistentes para os seus modelos.
+
+Esta aplicação foi desenvolvida para armazenar seus Prompts mais usados e simplificar o uso de modelos para resolver seus problemas do dia-a-dia!
+
+A aplicação possui duas telas:
+1. PromptView: Lista de prompts que você pode selecionar para iniciar uma conversa com os modelos.
+2. ChatView: Painel com Chat para conversar com o modelo usando um dos prompts que possui armazenado.
+

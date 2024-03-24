@@ -18,7 +18,7 @@ class WorkshopLocalITest {
         
         var chatModel = AiModelFactory.createLocalChatModel();
         
-        var result = chatModel.generate("hello world!");
+        var result = chatModel.generate("Write a Java hello world");
         
         Log.info(result);
     }
@@ -45,7 +45,7 @@ class WorkshopLocalITest {
         var chatAssistant = new ChatAssistant(chatModel);
 
         Log.info(chatAssistant.chat("Give me short description of observer pattern"));
-        Log.info(chatAssistant.chat("Give me a smallest example in Java, focus on conveying the core idea only"));
+        Log.info(chatAssistant.chat("Give me the smallest example in Java, focus on conveying the core idea only"));
     }
 
     @Test
@@ -61,7 +61,7 @@ class WorkshopLocalITest {
 
         var documentAssistant = new DocumentAssistant(chatModel, fileContentRetriever);
 
-        String result = documentAssistant.chat("What it says about Apple?");
+        String result = documentAssistant.chat("What the news says about AI?");
 
         Log.info(result);
     }

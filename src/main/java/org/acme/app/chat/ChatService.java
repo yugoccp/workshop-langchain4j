@@ -25,16 +25,14 @@ public class ChatService {
     }
 
     public void chat(String message, ChatAiModelTypeEnum source) {
-        var chatModel = createChatModel(source);
-        chatMemory.add(UserMessage.from(message));
-        var response = chatModel.generate(chatMemory.messages());
-        chatMemory.add(response.content());
-    }
 
-    private ChatLanguageModel createChatModel(ChatAiModelTypeEnum source) {
-        return switch(source) {
+        var chatModel = switch(source) {
             case OPEN_AI -> AiModelFactory.createOpenAIChatModel();
             case LOCAL -> AiModelFactory.createLocalChatModel();
         };
+
+        chatMemory.add(UserMessage.from(message));
+        var aiMessage = chatModel.generate(chatMemory.messages()).content();
+        chatMemory.add(aiMessage);
     }
 }
