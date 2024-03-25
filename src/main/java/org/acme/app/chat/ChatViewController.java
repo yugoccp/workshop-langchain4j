@@ -6,7 +6,6 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.acme.app.prompt.PromptService;
 
 import java.net.URI;
 
@@ -16,8 +15,6 @@ public class ChatViewController {
     private Template chatView;
     @Inject
     private ChatService chatService;
-    @Inject
-    private PromptService promptService;
 
     @GET
     @Produces(MediaType.TEXT_HTML)
@@ -29,8 +26,7 @@ public class ChatViewController {
     @GET
     @Path("newChat")
     public Response newChat(@QueryParam("prompt") String promptName, @QueryParam("model") ChatModelTypeEnum model) {
-        var prompt = promptService.getPrompt(promptName);
-        chatService.initChat(prompt, model);
+        chatService.initChat(promptName, model);
         return Response.temporaryRedirect(URI.create("/chat-view")).build();
     }
 

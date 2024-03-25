@@ -1,9 +1,13 @@
 package org.acme.bots;
 
+import dev.langchain4j.data.message.ChatMessage;
+import dev.langchain4j.data.message.SystemMessage;
 import dev.langchain4j.data.message.UserMessage;
 import dev.langchain4j.memory.ChatMemory;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.chat.ChatLanguageModel;
+
+import java.util.List;
 
 public class ChatAssistant {
     
@@ -13,6 +17,12 @@ public class ChatAssistant {
     public ChatAssistant(ChatLanguageModel chatModel) {
         this.chatModel = chatModel;
         chatMemory = MessageWindowChatMemory.withMaxMessages(10);
+    }
+
+    public ChatAssistant(ChatLanguageModel chatModel, String contextMessage) {
+        this.chatModel = chatModel;
+        chatMemory = MessageWindowChatMemory.withMaxMessages(10);
+        chatMemory.add(SystemMessage.from(contextMessage));
     }
 
     public String chat(String message){
@@ -30,6 +40,10 @@ public class ChatAssistant {
 
         // Return model response text
         return aiMessage.text();
+    }
+
+    public List<ChatMessage> getMessages(){
+        return chatMemory.messages();
     }
     
 }
