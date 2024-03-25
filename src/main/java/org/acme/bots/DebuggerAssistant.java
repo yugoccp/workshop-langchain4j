@@ -16,13 +16,13 @@ public class DebuggerAssistant {
     public String generate(String codeSnippet) {
 
         // Create a PromptTemplate for model instructions.
-        var emojiTemplate = PromptTemplate.from("""
+        var debuggerTemplate = PromptTemplate.from("""
            Can you identify any bugs in this Java code snippet? 
            {{codeSnippet}}
         """);
 
         // Replace template variables with the movieName.
-        var userMessage = emojiTemplate.apply(Map.of("codeSnippet", codeSnippet)).toUserMessage();
+        var userMessage = debuggerTemplate.apply(Map.of("codeSnippet", codeSnippet)).toUserMessage();
 
         // Send the template result to the model and return the model response.
         return chatModel.generate(userMessage).content().text();
