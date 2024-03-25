@@ -1,10 +1,10 @@
 package org.acme;
 
 import io.quarkus.logging.Log;
-import org.acme.bots.DebuggerAssistant;
-import org.acme.bots.ChatAssistant;
-import org.acme.bots.DocumentAssistant;
-import org.acme.bots.SearchAssistant;
+import org.acme.assistants.DebuggerAssistant;
+import org.acme.assistants.ChatAssistant;
+import org.acme.assistants.DocumentAssistant;
+import org.acme.assistants.SearchAssistant;
 import org.acme.factories.AiModelFactory;
 import org.acme.factories.ContentRetrieverFactory;
 import org.acme.factories.EmbeddingFactory;

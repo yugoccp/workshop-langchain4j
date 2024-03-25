@@ -7,7 +7,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.acme.app.repository.PromptRepository;
-import org.acme.bots.ChatAssistant;
+import org.acme.assistants.ChatAssistant;
 import org.acme.factories.AiModelFactory;
 
 import java.net.URI;

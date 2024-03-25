@@ -1,4 +1,4 @@
-package org.acme.bots;
+package org.acme.assistants;
 
 import dev.langchain4j.data.message.ChatMessage;
 import dev.langchain4j.data.message.SystemMessage;

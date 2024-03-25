@@ -1,4 +1,4 @@
-package org.acme.bots;
+package org.acme.assistants;
 
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.chat.ChatLanguageModel;

@@ -1,4 +1,4 @@
-package org.acme.bots;
+package org.acme.assistants;
 
 import java.util.Map;
 
