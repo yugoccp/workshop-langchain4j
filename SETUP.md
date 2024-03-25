@@ -42,21 +42,6 @@ java --version
 # OpenJDK 64-Bit Server VM Temurin-21.0.2+13 (build 21.0.2+13-LTS, mixed mode)
 ```
 
-## Instalar Quarkus CLI
-Visite o site e siga as isntruções para instalar o Quarkus CLI
-
-https://quarkus.io/guides/cli-tooling
-
-Ou utilize o SDKMan:
-```shell
-sdk install quarkus
-```
-
-Ou utilize o chocolatey:
-```shell
-choco install quarkus
-```
-
 ## Instalar LMStudio
 Visite o site e siga as instruções para instalar o LMStudio
 
@@ -70,10 +55,17 @@ https://lmstudio.ai/
 
 Assim que instalar o LMStudio, abra o programa e comece a baixar o modelo **Google's Gemma 2B Instruct** de 2.67GB
 
-### Caso você não tenha Hardware para executar o LMStudio
-Caso você não tenha Hardware para executar o LMStudio na sua máquina, você pode seguir com o Workshop utilizando uma conta da OpenAI
-Precisa cadastrar seu cartão, mas o custo para realizar o Workshop é mínimo (menos de 1 dólar).
+![lmstudio_gemma.png](resources%2Flmstudio_gemma.png)
+
+## Acessar OpenAI
+Você pode também usar sua conta da OpenAI para realizar esse Workshop!
+Precisa cadastrar seu cartão de crédito e o custo para realizar o Workshop é mínimo (menos de 1 dólar).
+Você verá GPT-3.5 tem um tempo de resposta e sofisticação muito melhor do que os modelos executados localmente.
+
+Para seguir com o Workshop usando a OpenAI, utilize os testes de integração definidos no arquivo WorkshopOpenAiITest.
 
 1. Crie uma conta na OpenAI. 
 2. Crie uma API Key.
 3. Crie uma variável de ambiente no seu sistema chamada `OPENAI_KEY` com o valor da sua API Key.
+
+![openai_apikey.png](resources%2Fopenai_apikey.png)

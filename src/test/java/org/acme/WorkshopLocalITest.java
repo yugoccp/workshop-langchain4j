@@ -11,9 +11,9 @@ import org.acme.factories.EmbeddingFactory;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-@Disabled
 class WorkshopLocalITest {
     @Test
+    @Disabled
     void test_1_Model() {
         
         var chatModel = AiModelFactory.createLocalChatModel();
@@ -24,6 +24,7 @@ class WorkshopLocalITest {
     }
 
     @Test
+    @Disabled
     void test_2_PromptTemplate() {
         
         var chatModel = AiModelFactory.createLocalChatModel();
@@ -39,6 +40,7 @@ class WorkshopLocalITest {
     }
 
     @Test
+    @Disabled
     void test_3_Memory() {
         
         var chatModel = AiModelFactory.createLocalChatModel();
@@ -49,6 +51,7 @@ class WorkshopLocalITest {
     }
 
     @Test
+    @Disabled
     void test_4_RAG() {
         
         var chatModel = AiModelFactory.createLocalChatModel();
@@ -67,6 +70,7 @@ class WorkshopLocalITest {
     }
 
     @Test
+    @Disabled
     void test_5_Tools() {
 
         var chatModel = AiModelFactory.createLocalChatModel();
