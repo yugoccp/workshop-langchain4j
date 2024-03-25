@@ -1,4 +1,4 @@
-package org.acme.app.prompt;
+package org.acme.app.views.prompt;
 
 
 import io.quarkus.qute.Template;
@@ -8,18 +8,19 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import org.acme.app.repository.PromptRepository;
 
 @Path("prompt-view")
 public class PromptViewController {
     @Inject
     private Template promptsView;
     @Inject
-    private PromptService promptService;
+    private PromptRepository promptRepository;
 
     @GET
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance getView() {
-        var prompts = promptService.getAllPrompts();
+        var prompts = promptRepository.findAll();
         return promptsView.data("promptList", prompts);
     }
 

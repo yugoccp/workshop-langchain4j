@@ -1,8 +1,9 @@
-package org.acme.app.prompt;
+package org.acme.app.repository;
 
 import io.quarkus.logging.Log;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
+import org.acme.app.dto.PromptDto;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,8 +15,10 @@ import java.util.List;
 import java.util.Optional;
 
 @ApplicationScoped
-public class PromptService {
-    private static final String COMMA_DELIMITER = ";";
+public class CsvPromptRepository implements PromptRepository {
+
+    private static final String CSV_DELIMITER = ";";
+
     private static final String DEFAULT_PROMPT_FILE = "prompts.csv";
     private String promptFilePath;
 
@@ -24,14 +27,14 @@ public class PromptService {
         promptFilePath = Optional.ofNullable(System.getenv("PROMPT_PATH")).orElse(DEFAULT_PROMPT_FILE);
     }
 
-    public List<PromptRecord> getAllPrompts() {
+    public List<PromptDto> findAll() {
         return readCsv(promptFilePath).stream()
-                .map(row -> new PromptRecord(row[0], row[1]))
+                .map(row -> new PromptDto(row[0], row[1]))
                 .toList();
     }
 
-    public PromptRecord getPrompt(String promptName) {
-        return getAllPrompts().stream()
+    public PromptDto findPrompt(String promptName) {
+        return findAll().stream()
                 .filter(p -> promptName.equals(p.name()))
                 .findFirst()
                 .orElseThrow();
@@ -43,7 +46,7 @@ public class PromptService {
             String line;
             var rows = new ArrayList<String[]>();
             while ((line = br.readLine()) != null) {
-                String[] values = line.split(COMMA_DELIMITER);
+                String[] values = line.split(CSV_DELIMITER);
                 rows.add(values);
             }
             return rows;
@@ -55,7 +58,7 @@ public class PromptService {
     }
 
     private static File getFile(String filename) {
-        var fileUrl = PromptService.class.getClassLoader().getResource(filename);
+        var fileUrl = CsvPromptRepository.class.getClassLoader().getResource(filename);
         File file = null;
         try {
             file = new File(fileUrl.toURI());

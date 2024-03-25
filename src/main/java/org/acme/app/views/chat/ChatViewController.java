@@ -1,4 +1,4 @@
-package org.acme.app.chat;
+package org.acme.app.views.chat;
 
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
@@ -6,6 +6,9 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.acme.app.repository.PromptRepository;
+import org.acme.bots.ChatAssistant;
+import org.acme.factories.AiModelFactory;
 
 import java.net.URI;
 
@@ -14,19 +17,26 @@ public class ChatViewController {
     @Inject
     private Template chatView;
     @Inject
-    private ChatService chatService;
+    private PromptRepository promptRepository;
+    private ChatAssistant chatAssistant;
+
 
     @GET
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance getView() {
-        var chatMessages = chatService.getMessages();
+        var chatMessages = chatAssistant.getMessages();
         return chatView.data("chatMessages", chatMessages);
     }
 
     @GET
     @Path("newChat")
     public Response newChat(@QueryParam("prompt") String promptName, @QueryParam("model") ChatModelTypeEnum model) {
-        chatService.initChat(promptName, model);
+        var prompt = promptRepository.findPrompt(promptName);
+        var chatModel = switch(model) {
+            case OPEN_AI -> AiModelFactory.createOpenAIChatModel();
+            case LOCAL -> AiModelFactory.createLocalChatModel();
+        };
+        chatAssistant = new ChatAssistant(chatModel, prompt.text());
         return Response.temporaryRedirect(URI.create("/chat-view")).build();
     }
 
@@ -35,8 +45,8 @@ public class ChatViewController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance sendMessage(@FormParam("text") String messageText) {
-        chatService.chat(messageText);
-        var chatMessages = chatService.getMessages();
+        chatAssistant.chat(messageText);
+        var chatMessages = chatAssistant.getMessages();
         return chatView.data("chatMessages", chatMessages);
     }
 }
