@@ -1,6 +1,7 @@
 package org.acme.app.prompt;
 
 import io.quarkus.logging.Log;
+import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 
 import java.io.BufferedReader;
@@ -8,20 +9,25 @@ import java.io.File;
 import java.io.FileReader;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @ApplicationScoped
 public class PromptService {
     private static final String COMMA_DELIMITER = ";";
-    private static final String DEFAULT_FILE = "prompts.csv";
+    private static final String DEFAULT_PROMPT_FILE = "prompts.csv";
+    private String promptFilePath;
+
+    @PostConstruct
+    void init() {
+        promptFilePath = Optional.ofNullable(System.getenv("PROMPT_PATH")).orElse(DEFAULT_PROMPT_FILE);
+    }
 
     public List<PromptRecord> getAllPrompts() {
-        var promptDataList = readCsv(DEFAULT_FILE).stream()
+        return readCsv(promptFilePath).stream()
                 .map(row -> new PromptRecord(row[0], row[1]))
                 .toList();
-        return promptDataList;
     }
 
     public PromptRecord getPrompt(String promptName) {

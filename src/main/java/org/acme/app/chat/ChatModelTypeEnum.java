@@ -1,6 +1,6 @@
 package org.acme.app.chat;
 
-public enum ChatAiModelTypeEnum {
+public enum ChatModelTypeEnum {
     OPEN_AI,
     LOCAL
 }

@@ -201,9 +201,9 @@ A pesquisa é então realizada, e o resultado é incorporado ao contexto para as
 
 Para ver esse processo em ação, execute o teste `test_5_Tools()`.
 
-## Construa Seu Gerenciador de Assistentes pessoal!
+## Construa Seu Gerenciador de Prompts pessoal!
 
-MyAssistants é um gerenciador de assistentes para os seus modelos.
+MyPrompts é um gerenciador de assistentes para os seus modelos.
 
 Esta aplicação foi desenvolvida para armazenar seus Prompts mais usados e simplificar o uso de modelos para resolver seus problemas do dia-a-dia!
 

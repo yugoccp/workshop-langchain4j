@@ -9,7 +9,7 @@
         <div class="header-wrapper">
             <div class="header">
                 <div>
-                    <p><strong>MyAssistants</strong> Your personal Assistant Storage ;)</p>
+                    <p><strong>MyPrompts</strong> Your personal Prompt Storage ;)</p>
                 </div>
                 <div class="left">
                     <a href="https://thedevconf.com/tdc/2024/summit-sao-paulo/#"><img  src="/branding-tdc-fundo-escuro.png"></a>
@@ -31,14 +31,8 @@
                 </div>
                 <div class="chat-input">
                     <form action="/chat-view/send" method="post" enctype="multipart/form-data">
-                        <textarea class="chat-input-text" id="text" name="text" maxlength="300" ></textarea>
+                        <textarea class="chat-input-text" id="text" name="text"></textarea>
                         <input class="btn" type="submit" value="Submit">
-                        <div class="model-options left">
-                            <input type="radio" id="local" name="modelSource" value="LOCAL" checked />
-                            <label for="local">Local</label>
-                            <input type="radio" id="openai" name="modelSource" value="OPEN_AI" />
-                            <label for="openai">OpenAI</label>
-                        </div>
                     </form>
                 </div>
             </div>

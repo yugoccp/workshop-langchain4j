@@ -9,7 +9,7 @@
         <div class="header-wrapper">
             <div class="header">
                 <div>
-                    <p><strong>MyAssistants</strong> Your personal Assistant Storage ;)</p>
+                    <p><strong>MyPrompts</strong> Your personal Prompt Storage ;)</p>
                 </div>
                 <div class="left">
                     <a href="https://thedevconf.com/tdc/2024/summit-sao-paulo/#"><img  src="/branding-tdc-fundo-escuro.png"></a>
@@ -25,7 +25,8 @@
                         <p>{prompt.text}</p>
                     </div>
                     <div class="prompt-item-actions">
-                        <a href="/chat-view/createChat?prompt={prompt.name}"><input class="btn" value="Use prompt"></a>
+                        <a href="/chat-view/newChat?prompt={prompt.name}&model=LOCAL"><input class="btn" value="Local"></a>
+                        <a href="/chat-view/newChat?prompt={prompt.name}&model=OPEN_AI"><input class="btn" value="OpenAI"></a>
                     </div>
                 </div>
             {/for}

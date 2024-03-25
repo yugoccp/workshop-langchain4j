@@ -26,11 +26,11 @@ public class ChatViewController {
         return chatView.data("chatMessages", chatMessages);
     }
 
-    @GET()
-    @Path("createChat")
-    public Response createChat(@QueryParam("prompt") String selectedPrompt) {
-        var promptData = promptService.getPrompt(selectedPrompt);
-        chatService.createChat(promptData.text());
+    @GET
+    @Path("newChat")
+    public Response newChat(@QueryParam("prompt") String promptName, @QueryParam("model") ChatModelTypeEnum model) {
+        var prompt = promptService.getPrompt(promptName);
+        chatService.initChat(prompt, model);
         return Response.temporaryRedirect(URI.create("/chat-view")).build();
     }
 
@@ -38,8 +38,8 @@ public class ChatViewController {
     @Path("send")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.TEXT_HTML)
-    public TemplateInstance sendMessage(@FormParam("text") String messageText, @FormParam("modelSource") ChatAiModelTypeEnum modelSource) {
-        chatService.chat(messageText, modelSource);
+    public TemplateInstance sendMessage(@FormParam("text") String messageText) {
+        chatService.chat(messageText);
         var chatMessages = chatService.getMessages();
         return chatView.data("chatMessages", chatMessages);
     }

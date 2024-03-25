@@ -59,6 +59,7 @@ img {
     display: grid;
     justify-content: end;
     grid-auto-flow: column;
+    column-gap: 5px;
     border-top: solid 1px lightgrey;
     padding: 6px;
 }
@@ -93,7 +94,4 @@ img {
 .chat-input-text {
     height: 80px;
     width: 100%;
-}
-.model-options {
-    display: inline-block;
 }
