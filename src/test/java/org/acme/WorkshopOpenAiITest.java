@@ -28,7 +28,7 @@ class WorkshopOpenAiITest {
     void test_2_PromptTemplate() {
         
         var chatModel = AiModelFactory.createOpenAIChatModel();
-            var debuggerAssistant = new DebuggerAssistant(chatModel);
+        var debuggerAssistant = new DebuggerAssistant(chatModel);
 
         var result = debuggerAssistant.generate("""
                 public static void main(String[] args) {
@@ -76,7 +76,7 @@ class WorkshopOpenAiITest {
         var chatModel = AiModelFactory.createOpenAIChatModel();
         var searchAssistant = new SearchAssistant(chatModel);
 
-        String result = searchAssistant.chat("What google says about Java and Generative AI?");
+        String result = searchAssistant.chat("What google says today about Java and Generative AI?");
 
         Log.info(result);
     }
