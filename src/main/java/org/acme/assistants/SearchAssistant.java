@@ -48,7 +48,7 @@ public class SearchAssistant {
     }
 
     private static List<String> getGoogleResults(@NotNull String query) {
-        var googleSearchURL = "https://www.google.com/search?q="+ query.replace(" ", "+");
+        var googleSearchURL = "https://www.google.com/search?q=" + query.replace(" ", "+");
 
         Document doc = null;
         try {

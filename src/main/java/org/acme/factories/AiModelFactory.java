@@ -8,7 +8,7 @@ import java.time.Duration;
 public class AiModelFactory {
     public static ChatLanguageModel createLocalChatModel() {
         return OpenAiChatModel.builder()
-                .baseUrl("http://localhost:1234/v1")
+                .baseUrl(System.getenv("LOCAL_URL"))
                 .apiKey("ignore")
                 .logRequests(true)
                 .timeout(Duration.ofSeconds(300))

@@ -15,20 +15,20 @@ class WorkshopLocalITest {
     @Test
     @Disabled
     void test_1_Model() {
-        
+
         var chatModel = AiModelFactory.createLocalChatModel();
-        
+
         var result = chatModel.generate("Write a Java hello world");
-        
+
         Log.info(result);
     }
 
     @Test
     @Disabled
     void test_2_PromptTemplate() {
-        
+
         var chatModel = AiModelFactory.createLocalChatModel();
-            var debuggerAssistant = new DebuggerAssistant(chatModel);
+        var debuggerAssistant = new DebuggerAssistant(chatModel);
 
         var result = debuggerAssistant.generate("""
                 public static void main(String[] args) {
@@ -42,7 +42,7 @@ class WorkshopLocalITest {
     @Test
     @Disabled
     void test_3_Memory() {
-        
+
         var chatModel = AiModelFactory.createLocalChatModel();
         var chatAssistant = new ChatAssistant(chatModel);
 
@@ -53,14 +53,14 @@ class WorkshopLocalITest {
     @Test
     @Disabled
     void test_4_RAG() {
-        
+
         var chatModel = AiModelFactory.createLocalChatModel();
         var embeddingModel = EmbeddingFactory.createEmbeddingModel();
         var embeddingStore = EmbeddingFactory.createEmbeddingStore();
         var fileContentRetriever = ContentRetrieverFactory.createFileContentRetriever(
-                                        embeddingModel,
-                                        embeddingStore,
-                                        "hckrnews.html");
+                embeddingModel,
+                embeddingStore,
+                "hckrnews.html");
 
         var documentAssistant = new DocumentAssistant(chatModel, fileContentRetriever);
 
