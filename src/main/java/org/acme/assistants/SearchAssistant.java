@@ -18,9 +18,9 @@ import java.util.stream.IntStream;
 
 public class SearchAssistant {
 
-    private GoogleSearchAssistant searchAssistant;
+    private GoogleSearchAiService googleSearchAiService;
 
-    interface GoogleSearchAssistant {
+    interface GoogleSearchAiService {
         String chat(String userMessage);
     }
 
@@ -36,7 +36,7 @@ public class SearchAssistant {
     }
 
     public SearchAssistant(ChatLanguageModel chatModel) {
-        this.searchAssistant = AiServices.builder(GoogleSearchAssistant.class)
+        this.googleSearchAiService = AiServices.builder(GoogleSearchAiService.class)
                 .chatLanguageModel(chatModel)
                 .chatMemory(MessageWindowChatMemory.withMaxMessages(10))
                 .tools(new SearchTools())
@@ -44,7 +44,7 @@ public class SearchAssistant {
     }
 
     public String chat(String userMessage) {
-        return searchAssistant.chat(userMessage);
+        return googleSearchAiService.chat(userMessage);
     }
 
     private static List<String> getGoogleResults(@NotNull String query) {
@@ -52,10 +52,11 @@ public class SearchAssistant {
 
         Document doc = null;
         try {
-            System.out.println("Search at google: " + googleSearchURL);
+            Log.info("Search at google: " + googleSearchURL);
             doc = Jsoup.connect(googleSearchURL).get();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            Log.error("Error fetching content: " + googleSearchURL);
+            return Collections.emptyList();
         }
 
         var titles = doc

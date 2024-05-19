@@ -1,46 +1,38 @@
-# Instruções de Setup
+# Requisitos
 
 Olá! Para realizar esse Workshop, você precisará das seguintes ferramentas na sua máquina:
 
-- Java JDK 21
-- Quarkus CLI
 - LMStudio
+- Docker
+- Docker Compose
 
 E uma boa internet xD!
 
-Dica: Você pode usar o SDKMan para ajudar a instalar algumas ferramentas
+# Desenvolvimento
 
-https://sdkman.io/
+Este projeto utiliza o Docker e Docker Compose para desenvolvimento.
 
-Dica[2]: Se você é usuário Windows, também pode preferir utilizar o chocolatey ;)
+Execute o Docker Compose para construir e iniciar os contêineres no seu terminal WSL:
 
-https://chocolatey.org/install
-
-## Instalar Java JDK 21
-Visite o site e baixe o JDK 21 (lembre-se de configurar a variável ambiente!)
-
-https://adoptium.net/temurin/releases/?package=jdk&arch=any&os=any
-
-Ou utilize SDKMan:
 ```shell
-sdk install java 21.0.2-tem
-sdk use java 21.0.2-tem
+docker compose up -d
 ```
 
-Ou utilize o chocolatey:
+O contêiner está configurado para mapear o volume workspace/src/ para a pasta src/ da máquina hospedeira.
+
+Toda alteração que você fizer na pasta src/ refletirá na pasta workspace/src/ do contêiner.
+
+Execute o seguinte comando para iniciar a aplicação dentro do contêiner de desenvolvimento:
+
 ```shell
-choco install temurin
+# Este comando lhe dará acesso ao bash do contêiner
+docker compose exec -it workshop-app bash
+
+# Dentro do bash do contêiner, execute o seguinte comando:
+./mvnw compile quarkus:dev
 ```
 
-Verifique se a versão correta está instalada e disponível:
-```shell
-java --version
-
-# Output esperado:
-# openjdk 21.0.2 2024-01-16 LTS
-# OpenJDK Runtime Environment Temurin-21.0.2+13 (build 21.0.2+13-LTS)
-# OpenJDK 64-Bit Server VM Temurin-21.0.2+13 (build 21.0.2+13-LTS, mixed mode)
-```
+# Instalação
 
 ## Instalar LMStudio
 Visite o site e siga as instruções para instalar o LMStudio
@@ -57,15 +49,26 @@ Assim que instalar o LMStudio, abra o programa e comece a baixar o modelo **Goog
 
 ![lmstudio_gemma.png](resources%2Flmstudio_gemma.png)
 
-## Acessar OpenAI
-Você pode também usar sua conta da OpenAI para realizar esse Workshop!
-Precisa cadastrar seu cartão de crédito e o custo para realizar o Workshop é mínimo (menos de 1 dólar).
-Você verá GPT-3.5 tem um tempo de resposta e sofisticação muito melhor do que os modelos executados localmente.
+## Utilizar o OpenAI
 
-Para seguir com o Workshop usando a OpenAI, utilize os testes de integração definidos no arquivo WorkshopOpenAiITest.
+Para esse Workshop, usaremos a chave "demo" da OpenAI. 
+
+Você pode também usar sua conta da OpenAI para realizar esse Workshop e evoluir usando as últimas versões de modelos como o GPT4 e GPT4o!
+
+Siga as instruções a seguir:
 
 1. Crie uma conta na OpenAI. 
 2. Crie uma API Key.
 3. Crie uma variável de ambiente no seu sistema chamada `OPENAI_KEY` com o valor da sua API Key.
+4. Armazene a sua OPENAI_KEY em algum arquivo de ambiente e NÃO adicione no porjeto!
+5. Altere o arquivo AiModelFactory.java para utilizar a sua chave, por exemplo:
+```java
+public static ChatLanguageModel createOpenAIChatModel() {
+    return OpenAiChatModel.builder()
+            .apiKey(System.getenv("OPENAI_KEY"))
+            .logRequests(true)
+            .build();
+}
+```
 
 ![openai_apikey.png](resources%2Fopenai_apikey.png)

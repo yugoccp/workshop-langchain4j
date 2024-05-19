@@ -1,0 +1,14 @@
+# Start with a base image containing Java runtime
+FROM eclipse-temurin:21-jdk
+
+# Set the working directory in the container
+WORKDIR /workspace
+
+COPY pom.xml .
+COPY .mvn .mvn
+COPY --chmod=0755 mvnw .
+
+RUN sed -i 's/\r$//' ./mvnw
+RUN ./mvnw install
+
+CMD ["./mvnw", "quarkus:dev"]

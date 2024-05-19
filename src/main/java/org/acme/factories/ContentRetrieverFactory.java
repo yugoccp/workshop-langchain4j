@@ -20,6 +20,10 @@ import java.util.List;
 
 public class ContentRetrieverFactory {
 
+    private ContentRetrieverFactory() {
+        throw new IllegalStateException("Factory class shouldn't be instantiated");
+    }
+
     public static ContentRetriever createFileContentRetriever(EmbeddingModel embeddingModel,
             EmbeddingStore<TextSegment> embeddingStore, String filename) {
         // Transform single file content into chunks of text segments.
