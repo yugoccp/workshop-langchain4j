@@ -26,9 +26,9 @@ class WorkshopOpenAiITest {
     @Test
     @Disabled
     void test_2_PromptTemplate() {
-        
+
         var chatModel = AiModelFactory.createOpenAIChatModel();
-            var debuggerAssistant = new DebuggerAssistant(chatModel);
+        var debuggerAssistant = new DebuggerAssistant(chatModel);
 
         var result = debuggerAssistant.generate("""
                 public static void main(String[] args) {
@@ -42,7 +42,7 @@ class WorkshopOpenAiITest {
     @Test
     @Disabled
     void test_3_Memory() {
-        
+
         var chatModel = AiModelFactory.createOpenAIChatModel();
         var chatAssistant = new ChatAssistant(chatModel);
 
@@ -53,14 +53,14 @@ class WorkshopOpenAiITest {
     @Test
     @Disabled
     void test_4_RAG() {
-        
+
         var chatModel = AiModelFactory.createOpenAIChatModel();
         var embeddingModel = EmbeddingFactory.createEmbeddingModel();
         var embeddingStore = EmbeddingFactory.createEmbeddingStore();
         var fileContentRetriever = ContentRetrieverFactory.createFileContentRetriever(
-                                        embeddingModel,
-                                        embeddingStore,
-                                        "hckrnews.html");
+                embeddingModel,
+                embeddingStore,
+                "hckrnews.html");
 
         var documentAssistant = new DocumentAssistant(chatModel, fileContentRetriever);
 

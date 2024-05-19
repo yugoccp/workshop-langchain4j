@@ -20,7 +20,8 @@ import java.util.List;
 
 public class ContentRetrieverFactory {
 
-    public static ContentRetriever createFileContentRetriever(EmbeddingModel embeddingModel, EmbeddingStore<TextSegment> embeddingStore, String filename) {
+    public static ContentRetriever createFileContentRetriever(EmbeddingModel embeddingModel,
+            EmbeddingStore<TextSegment> embeddingStore, String filename) {
         // Transform single file content into chunks of text segments.
         var segments = createTextSegments(filename);
 
@@ -51,7 +52,7 @@ public class ContentRetrieverFactory {
             URL fileUrl = ContentRetrieverFactory.class.getClassLoader().getResource(fileName);
             return Paths.get(fileUrl.toURI());
         } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 }
