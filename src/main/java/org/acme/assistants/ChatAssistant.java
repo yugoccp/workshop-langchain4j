@@ -6,11 +6,12 @@ import dev.langchain4j.data.message.UserMessage;
 import dev.langchain4j.memory.ChatMemory;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.chat.ChatLanguageModel;
+import kotlin.NotImplementedError;
 
 import java.util.List;
 
 public class ChatAssistant {
-    
+
     private ChatLanguageModel chatModel;
     private ChatMemory chatMemory;
 
@@ -25,25 +26,28 @@ public class ChatAssistant {
         chatMemory.add(SystemMessage.from(contextMessage));
     }
 
-    public String chat(String message){
+    public String chat(String message) {
 
         // Add user message to chatMemory
-        chatMemory.add(UserMessage.from(message));
+        // chatMemory.add(UserMessage.from(message));
 
         // Send all the chatMemory messages to chatModel
-        var aiMessage = chatModel
-                .generate(chatMemory.messages())
-                .content();
+        // var aiMessage = chatModel
+        // .generate(chatMemory.messages())
+        // .content();
 
-        // Add model response to chatMemory to give whole context for the model in the next Prompt
-        chatMemory.add(aiMessage);
+        // Add model response to chatMemory to give whole context for the model in the
+        // next Prompt
+        // chatMemory.add(aiMessage);
 
         // Return model response text
-        return aiMessage.text();
+        // return aiMessage.text();
+
+        throw new NotImplementedError();
     }
 
-    public List<ChatMessage> getMessages(){
+    public List<ChatMessage> getMessages() {
         return chatMemory.messages();
     }
-    
+
 }

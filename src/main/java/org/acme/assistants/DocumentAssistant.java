@@ -4,6 +4,7 @@ import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.rag.content.retriever.ContentRetriever;
 import dev.langchain4j.service.AiServices;
+import kotlin.NotImplementedError;
 
 public class DocumentAssistant {
     private DocumentAiService documentAiService;
@@ -14,8 +15,9 @@ public class DocumentAssistant {
 
     public DocumentAssistant(ChatLanguageModel chatModel, ContentRetriever contentRetriever) {
         // Build DocumentAiService
-        this.documentAiService = buildDocumentAiService(chatModel, contentRetriever);
+        // this.documentAiService = buildDocumentAiService(chatModel, contentRetriever);
 
+        throw new NotImplementedError();
     }
 
     public String chat(String message) {

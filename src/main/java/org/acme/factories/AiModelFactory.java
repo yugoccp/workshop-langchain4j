@@ -2,6 +2,7 @@ package org.acme.factories;
 
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.openai.OpenAiChatModel;
+import kotlin.NotImplementedError;
 
 import java.time.Duration;
 
@@ -12,18 +13,22 @@ public class AiModelFactory {
     }
 
     public static ChatLanguageModel createLocalChatModel() {
-        return OpenAiChatModel.builder()
-                .baseUrl("http://localhost:1234/v1")
-                .apiKey("ignore")
-                .logRequests(true)
-                .timeout(Duration.ofSeconds(300))
-                .build();
+        // return OpenAiChatModel.builder()
+        // .baseUrl("http://localhost:1234/v1")
+        // .apiKey("ignore")
+        // .logRequests(true)
+        // .timeout(Duration.ofSeconds(300))
+        // .build();
+
+        throw new NotImplementedError();
     }
 
     public static ChatLanguageModel createOpenAIChatModel() {
-        return OpenAiChatModel.builder()
-                .apiKey("demo")
-                .logRequests(true)
-                .build();
+        // return OpenAiChatModel.builder()
+        // .apiKey("demo")
+        // .logRequests(true)
+        // .build();
+
+        throw new NotImplementedError();
     }
 }

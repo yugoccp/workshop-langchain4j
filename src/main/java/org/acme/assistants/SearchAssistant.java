@@ -6,6 +6,8 @@ import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.service.AiServices;
 import io.quarkus.logging.Log;
+import kotlin.NotImplementedError;
+
 import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -36,11 +38,13 @@ public class SearchAssistant {
     }
 
     public SearchAssistant(ChatLanguageModel chatModel) {
-        this.googleSearchAiService = AiServices.builder(GoogleSearchAiService.class)
-                .chatLanguageModel(chatModel)
-                .chatMemory(MessageWindowChatMemory.withMaxMessages(10))
-                .tools(new SearchTools())
-                .build();
+        // this.googleSearchAiService = AiServices.builder(GoogleSearchAiService.class)
+        // .chatLanguageModel(chatModel)
+        // .chatMemory(MessageWindowChatMemory.withMaxMessages(10))
+        // .tools(new SearchTools())
+        // .build();
+
+        throw new NotImplementedError();
     }
 
     public String chat(String userMessage) {
