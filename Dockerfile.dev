@@ -1,6 +1,8 @@
 # Start with a base image containing Java runtime
 FROM eclipse-temurin:21-jdk
 
+EXPOSE 8080
+
 # Set the working directory in the container
 WORKDIR /workspace
 
