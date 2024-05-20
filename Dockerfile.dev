@@ -13,4 +13,4 @@ COPY --chmod=0755 mvnw .
 RUN sed -i 's/\r$//' ./mvnw
 RUN ./mvnw install
 
-CMD ["./mvnw", "quarkus:dev"]
+CMD ["tail", "-f", "/dev/null"]

@@ -18,7 +18,7 @@ Execute o Docker Compose para construir e iniciar os contêineres no seu termina
 docker compose up -d
 ```
 
-O contêiner está configurado para mapear o volume workspace/src/ para a pasta src/ da máquina hospedeira.
+O contêiner está configurado para mapear a porta 8080 e o volume workspace/src/ para a porta 8080 e a pasta src/ da máquina host.
 
 Toda alteração que você fizer na pasta src/ refletirá na pasta workspace/src/ do contêiner.
 
