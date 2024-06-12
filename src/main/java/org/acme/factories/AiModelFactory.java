@@ -4,6 +4,7 @@ import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 
 import java.time.Duration;
+import java.util.Optional;
 
 public class AiModelFactory {
 
@@ -21,8 +22,9 @@ public class AiModelFactory {
     }
 
     public static ChatLanguageModel createOpenAIChatModel() {
+        var openAiKey = Optional.ofNullable(System.getenv("OPENAI_KEY")).orElse("demo");
         return OpenAiChatModel.builder()
-                .apiKey("demo")
+                .apiKey(openAiKey)
                 .logRequests(true)
                 .build();
     }
