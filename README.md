@@ -6,7 +6,7 @@ Olá! Para realizar esse Workshop, você precisará das seguintes ferramentas na
 - Docker
 - Docker Compose
 
-E uma boa internet xD!
+E muita memória RAM, CPU e internet xD!
 
 # Desenvolvimento
 
