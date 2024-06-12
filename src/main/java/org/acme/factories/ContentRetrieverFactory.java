@@ -1,10 +1,9 @@
 package org.acme.factories;
 
 import dev.langchain4j.data.document.Document;
-import dev.langchain4j.data.document.DocumentParser;
 import dev.langchain4j.data.document.DocumentSplitter;
 import dev.langchain4j.data.document.loader.FileSystemDocumentLoader;
-import dev.langchain4j.data.document.parser.TextDocumentParser;
+import dev.langchain4j.data.document.parser.apache.pdfbox.ApachePdfBoxDocumentParser;
 import dev.langchain4j.data.document.splitter.DocumentSplitters;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.model.embedding.EmbeddingModel;
@@ -44,16 +43,16 @@ public class ContentRetrieverFactory {
     }
 
     private static List<TextSegment> createTextSegments(String filename) {
-        Path documentPath = toPath(filename);
-        DocumentParser documentParser = new TextDocumentParser();
-        Document document = FileSystemDocumentLoader.loadDocument(documentPath, documentParser);
-        DocumentSplitter splitter = DocumentSplitters.recursive(300, 0);
+        var documentPath = toPath(filename);
+        var pdfParser = new ApachePdfBoxDocumentParser();
+        var document = FileSystemDocumentLoader.loadDocument(documentPath, pdfParser);
+        var splitter = DocumentSplitters.recursive(300, 0);
         return splitter.split(document);
     }
 
     private static Path toPath(String fileName) {
         try {
-            URL fileUrl = ContentRetrieverFactory.class.getClassLoader().getResource(fileName);
+            var fileUrl = ContentRetrieverFactory.class.getClassLoader().getResource(fileName);
             return Paths.get(fileUrl.toURI());
         } catch (URISyntaxException e) {
             throw new IllegalStateException(e);

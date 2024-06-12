@@ -27,7 +27,6 @@ img {
     grid-template-columns: 1fr 1fr;
  }
 .content-wrapper {
-    padding: 0 13rem;
     background: white;
 }
 .btn {

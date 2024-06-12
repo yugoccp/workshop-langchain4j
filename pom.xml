@@ -14,7 +14,7 @@
     <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
     <quarkus.platform.version>3.8.2</quarkus.platform.version>
-    <langchain4j.version>0.28.0</langchain4j.version>
+    <langchain4j.version>0.31.0</langchain4j.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -49,6 +49,11 @@
     <dependency>
       <groupId>dev.langchain4j</groupId>
       <artifactId>langchain4j-embeddings-all-minilm-l6-v2</artifactId>
+      <version>${langchain4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>dev.langchain4j</groupId>
+      <artifactId>langchain4j-document-parser-apache-pdfbox</artifactId>
       <version>${langchain4j.version}</version>
     </dependency>
     <dependency>

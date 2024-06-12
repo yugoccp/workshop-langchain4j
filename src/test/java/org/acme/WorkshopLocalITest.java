@@ -41,13 +41,23 @@ class WorkshopLocalITest {
 
     @Test
     @Disabled
+    void test_3_NoMemory() {
+
+        var chatModel = AiModelFactory.createLocalChatModel();
+
+        Log.info(chatModel.generate("I'm a Java programmer"));
+        Log.info(chatModel.generate("In which language do I program?"));
+    }
+
+    @Test
+    @Disabled
     void test_3_Memory() {
 
         var chatModel = AiModelFactory.createLocalChatModel();
         var chatAssistant = new ChatAssistant(chatModel);
 
-        Log.info(chatAssistant.chat("Give me short description of observer pattern"));
-        Log.info(chatAssistant.chat("Give me the smallest example in Java, focus on conveying the core idea only"));
+        Log.info(chatAssistant.chat("I'm a Java programmer"));
+        Log.info(chatAssistant.chat("In which language do I program?"));
     }
 
     @Test
@@ -60,7 +70,7 @@ class WorkshopLocalITest {
         var fileContentRetriever = ContentRetrieverFactory.createFileContentRetriever(
                 embeddingModel,
                 embeddingStore,
-                "hckrnews.html");
+                "news.pdf");
 
         var documentAssistant = new DocumentAssistant(chatModel, fileContentRetriever);
 

@@ -41,13 +41,23 @@ class WorkshopOpenAiITest {
 
     @Test
     @Disabled
+    void test_3_NoMemory() {
+
+        var chatModel = AiModelFactory.createOpenAIChatModel();
+
+        Log.info(chatModel.generate("I'm a Java programmer"));
+        Log.info(chatModel.generate("In which language do I program?"));
+    }
+
+    @Test
+    @Disabled
     void test_3_Memory() {
 
         var chatModel = AiModelFactory.createOpenAIChatModel();
         var chatAssistant = new ChatAssistant(chatModel);
 
-        Log.info(chatAssistant.chat("Give me short description of observer pattern"));
-        Log.info(chatAssistant.chat("Give me the smallest example in Java, focus on conveying the core idea only"));
+        Log.info(chatAssistant.chat("I'm a Java programmer"));
+        Log.info(chatAssistant.chat("In which language do I program?"));
     }
 
     @Test
@@ -60,7 +70,7 @@ class WorkshopOpenAiITest {
         var fileContentRetriever = ContentRetrieverFactory.createFileContentRetriever(
                 embeddingModel,
                 embeddingStore,
-                "hckrnews.html");
+                "news.pdf");
 
         var documentAssistant = new DocumentAssistant(chatModel, fileContentRetriever);
 
@@ -70,13 +80,13 @@ class WorkshopOpenAiITest {
     }
 
     @Test
-    @Disabled
+    // @Disabled
     void test_5_Tools() {
 
         var chatModel = AiModelFactory.createOpenAIChatModel();
         var searchAssistant = new SearchAssistant(chatModel);
 
-        String result = searchAssistant.chat("What google says today about Java and Generative AI?");
+        String result = searchAssistant.chat("What google says about Java and Generative AI?");
 
         Log.info(result);
     }

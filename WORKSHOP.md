@@ -4,7 +4,7 @@
 
 Execute a aplicação em modo de desenvolvedor para validar que tudo ocorreu bem:
 ```shell
-./mvnw compile quarkus:dev
+./mvnw quarkus:dev
 ```
 
 ## Utilizaremos o Langchain4J para orquestrar nossa interação com os modelos LLM
@@ -12,7 +12,7 @@ As dependências do [Langchain4J](https://docs.langchain4j.dev/get-started) fora
 ```xml
 <properties>
    ...
-    <langchain4j.version>0.28.0</langchain4j.version>
+    <langchain4j.version>0.31.0</langchain4j.version>
 </properties>
 ...
 <dependencies>
@@ -30,7 +30,7 @@ As dependências do [Langchain4J](https://docs.langchain4j.dev/get-started) fora
     <dependency>
         <groupId>dev.langchain4j</groupId>
         <artifactId>langchain4j-embeddings-all-minilm-l6-v2</artifactId>
-        <version>0.28.0</version>
+        <version>${langchain4j.version}</version>
     </dependency>
 </dependencies>
 ```
