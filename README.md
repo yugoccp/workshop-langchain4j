@@ -15,7 +15,7 @@ Este projeto utiliza o Docker e Docker Compose para desenvolvimento.
 Execute o Docker Compose para construir e iniciar os contêineres no seu terminal WSL:
 
 ```shell
-docker compose up -d
+docker compose --env-file .env up -d
 ```
 
 O contêiner está configurado para mapear a porta 8080 e o volume workspace/src/ para a porta 8080 e a pasta src/ da máquina host.
@@ -26,10 +26,7 @@ Execute o seguinte comando para iniciar a aplicação dentro do contêiner de de
 
 ```shell
 # Este comando lhe dará acesso ao bash do contêiner
-docker compose exec -it workshop-app bash
-
-# Dentro do bash do contêiner, execute o seguinte comando:
-./mvnw compile quarkus:dev
+docker compose exec -it ./mvnw quarkus:test
 ```
 
 # Instalação

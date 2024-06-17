@@ -1,9 +1,17 @@
 services:
-  workshop-app:
+  app:
     build:
       context: .
       dockerfile: Dockerfile.dev
     ports:
       - 8080:8080
     volumes:
-      - ./src:/workspace/src
+      - ./src:/workspace/src  
+
+  local-llm:
+    build:
+      context: .
+      dockerfile: Dockerfile.ollama
+    ports:
+      - 11434:11434
+    profiles: [local-llm]
