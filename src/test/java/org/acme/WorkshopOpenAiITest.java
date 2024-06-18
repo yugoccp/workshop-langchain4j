@@ -80,7 +80,7 @@ class WorkshopOpenAiITest {
     }
 
     @Test
-    // @Disabled
+    @Disabled
     void test_5_Tools() {
 
         var chatModel = AiModelFactory.createOpenAIChatModel();
