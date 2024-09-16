@@ -23,8 +23,10 @@ public class AiModelFactory {
 
     public static ChatLanguageModel createOpenAIChatModel() {
         var openAiKey = Optional.ofNullable(System.getenv("OPENAI_KEY")).orElse("demo");
+        var model = Optional.ofNullable(System.getenv("OPENAI_MODEL")).orElse("gpt-4o-mini");
         return OpenAiChatModel.builder()
                 .apiKey(openAiKey)
+                .modelName(model)
                 .logRequests(true)
                 .build();
     }
