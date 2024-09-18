@@ -45,8 +45,13 @@ class WorkshopOpenAiITest {
 
         var chatModel = AiModelFactory.createOpenAIChatModel();
 
-        Log.info(chatModel.generate("I'm a Java programmer"));
-        Log.info(chatModel.generate("In which language do I program?"));
+        var prompt1 = "I'm a Java programmer";
+        Log.info(prompt1);
+        Log.info(chatModel.generate(prompt1));
+
+        var prompt2 = "In which language do I program?";
+        Log.info(prompt2);
+        Log.info(chatModel.generate(prompt2));
     }
 
     @Test
@@ -56,8 +61,13 @@ class WorkshopOpenAiITest {
         var chatModel = AiModelFactory.createOpenAIChatModel();
         var chatAssistant = new ChatAssistant(chatModel);
 
-        Log.info(chatAssistant.chat("I'm a Java programmer"));
-        Log.info(chatAssistant.chat("In which language do I program?"));
+        var prompt1 = "I'm a Java programmer";
+        Log.info(prompt1);
+        Log.info(chatAssistant.chat(prompt1));
+
+        var prompt2 = "In which language do I program?";
+        Log.info(prompt2);
+        Log.info(chatAssistant.chat(prompt2));
     }
 
     @Test
@@ -80,7 +90,7 @@ class WorkshopOpenAiITest {
     }
 
     @Test
-    // @Disabled
+    @Disabled
     void test_5_Tools() {
 
         var chatModel = AiModelFactory.createOpenAIChatModel();

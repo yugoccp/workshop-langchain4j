@@ -12,10 +12,12 @@ import org.acme.app.repository.PromptRepository;
 
 @Path("prompt-view")
 public class PromptViewController {
+
     @Inject
-    private Template promptsView;
+    Template promptsView;
+
     @Inject
-    private PromptRepository promptRepository;
+    PromptRepository promptRepository;
 
     @GET
     @Produces(MediaType.TEXT_HTML)

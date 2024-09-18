@@ -14,12 +14,14 @@ import java.net.URI;
 
 @Path("chat-view")
 public class ChatViewController {
-    @Inject
-    private Template chatView;
-    @Inject
-    private PromptRepository promptRepository;
-    private ChatAssistant chatAssistant;
 
+    @Inject
+    Template chatView;
+
+    @Inject
+    PromptRepository promptRepository;
+
+    private ChatAssistant chatAssistant;
 
     @GET
     @Produces(MediaType.TEXT_HTML)

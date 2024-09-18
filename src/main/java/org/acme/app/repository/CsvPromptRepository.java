@@ -18,14 +18,9 @@ import java.util.Optional;
 public class CsvPromptRepository implements PromptRepository {
 
     private static final String CSV_DELIMITER = ";";
-
     private static final String DEFAULT_PROMPT_FILE = "prompts.csv";
-    private String promptFilePath;
 
-    @PostConstruct
-    void init() {
-        promptFilePath = Optional.ofNullable(System.getenv("PROMPT_PATH")).orElse(DEFAULT_PROMPT_FILE);
-    }
+    private final String promptFilePath = Optional.ofNullable(System.getenv("PROMPT_PATH")).orElse(DEFAULT_PROMPT_FILE);
 
     public List<PromptDto> findAll() {
         return readCsv(promptFilePath).stream()
