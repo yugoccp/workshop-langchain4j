@@ -9,14 +9,21 @@ import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static org.apache.commons.io.FilenameUtils.getExtension;
+
 public class DocumentLoader {
 
     private static final Logger logger = LoggerFactory.getLogger(DocumentLoader.class);
 
     public static String getResource(String filename) {
         var documentPath = toResourcePath(filename);
-        var pdfParser = new ApachePdfBoxDocumentParser();
-        return FileSystemDocumentLoader.loadDocument(documentPath, pdfParser).text();
+        var fileExt = getExtension(filename);
+
+        if (fileExt.equals("pdf")) {
+            return FileSystemDocumentLoader.loadDocument(documentPath, new ApachePdfBoxDocumentParser()).text();
+        } else {
+            return FileSystemDocumentLoader.loadDocument(documentPath).text();
+        }
     }
 
     private static Path toResourcePath(String fileName) {

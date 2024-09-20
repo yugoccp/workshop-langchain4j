@@ -21,7 +21,7 @@ public class SearchAssistant {
 
     private static final Logger logger = LoggerFactory.getLogger(SearchAssistant.class);
 
-    private GoogleSearchAiService googleSearchAiService;
+    private final GoogleSearchAiService googleSearchAiService;
 
     interface GoogleSearchAiService {
         String chat(String userMessage);
