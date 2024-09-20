@@ -1,9 +1,9 @@
 package org.acme.app.repository;
 
-import io.quarkus.logging.Log;
-import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.acme.app.dto.PromptDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,6 +16,8 @@ import java.util.Optional;
 
 @ApplicationScoped
 public class CsvPromptRepository implements PromptRepository {
+
+    private static final Logger logger = LoggerFactory.getLogger(CsvPromptRepository.class);
 
     private static final String CSV_DELIMITER = ";";
     private static final String DEFAULT_PROMPT_FILE = "prompts.csv";
@@ -46,7 +48,7 @@ public class CsvPromptRepository implements PromptRepository {
             }
             return rows;
         } catch (Exception e) {
-            Log.error("Error loading CSV file:" + e.getMessage());
+            logger.error("Error loading CSV file:{}", e.getMessage());
         }
 
         return Collections.emptyList();
@@ -58,7 +60,7 @@ public class CsvPromptRepository implements PromptRepository {
         try {
             file = new File(fileUrl.toURI());
         } catch (URISyntaxException e) {
-            Log.error("Error to open file: " + e.getMessage());
+            logger.error("Error to open file: {}", e.getMessage());
             throw new RuntimeException(e);
         }
         return file;

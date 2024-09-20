@@ -1,17 +1,22 @@
 package org.acme;
 
-import io.quarkus.logging.Log;
 import org.acme.assistants.ChatAssistant;
 import org.acme.assistants.DebuggerAssistant;
 import org.acme.assistants.DocumentAssistant;
 import org.acme.assistants.SearchAssistant;
-import org.acme.factories.AiModelFactory;
-import org.acme.factories.ContentRetrieverFactory;
-import org.acme.factories.EmbeddingFactory;
+import org.acme.utils.AiModelFactory;
+import org.acme.utils.ContentRetrieverFactory;
+import org.acme.utils.DocumentLoader;
+import org.acme.utils.EmbeddingFactory;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class WorkshopOpenAiITest {
+
+    private static final Logger logger = LoggerFactory.getLogger(WorkshopOpenAiITest.class);
+
     @Test
     @Disabled
     void test_1_Model() {
@@ -20,7 +25,7 @@ class WorkshopOpenAiITest {
 
         var result = chatModel.generate("Write a Java hello world");
 
-        Log.info(result);
+        logger.info(result);
     }
 
     @Test
@@ -36,7 +41,7 @@ class WorkshopOpenAiITest {
                 }
                 """);
 
-        Log.info(result);
+        logger.info(result);
     }
 
     @Test
@@ -46,12 +51,12 @@ class WorkshopOpenAiITest {
         var chatModel = AiModelFactory.createOpenAIChatModel();
 
         var prompt1 = "I'm a Java programmer";
-        Log.info(prompt1);
-        Log.info(chatModel.generate(prompt1));
+        logger.info(prompt1);
+        logger.info(chatModel.generate(prompt1));
 
         var prompt2 = "In which language do I program?";
-        Log.info(prompt2);
-        Log.info(chatModel.generate(prompt2));
+        logger.info(prompt2);
+        logger.info(chatModel.generate(prompt2));
     }
 
     @Test
@@ -62,12 +67,12 @@ class WorkshopOpenAiITest {
         var chatAssistant = new ChatAssistant(chatModel);
 
         var prompt1 = "I'm a Java programmer";
-        Log.info(prompt1);
-        Log.info(chatAssistant.chat(prompt1));
+        logger.info(prompt1);
+        logger.info(chatAssistant.chat(prompt1));
 
         var prompt2 = "In which language do I program?";
-        Log.info(prompt2);
-        Log.info(chatAssistant.chat(prompt2));
+        logger.info(prompt2);
+        logger.info(chatAssistant.chat(prompt2));
     }
 
     @Test
@@ -77,16 +82,17 @@ class WorkshopOpenAiITest {
         var chatModel = AiModelFactory.createOpenAIChatModel();
         var embeddingModel = EmbeddingFactory.createEmbeddingModel();
         var embeddingStore = EmbeddingFactory.createEmbeddingStore();
-        var fileContentRetriever = ContentRetrieverFactory.createFileContentRetriever(
+        var content = DocumentLoader.getResource("news.pdf");
+        var contentRetriever = ContentRetrieverFactory.createContentRetriever(
                 embeddingModel,
                 embeddingStore,
-                "news.pdf");
+                content);
 
-        var documentAssistant = new DocumentAssistant(chatModel, fileContentRetriever);
+        var documentAssistant = new DocumentAssistant(chatModel, contentRetriever);
 
         String result = documentAssistant.chat("What the news says about AI?");
 
-        Log.info(result);
+        logger.info(result);
     }
 
     @Test
@@ -96,8 +102,8 @@ class WorkshopOpenAiITest {
         var chatModel = AiModelFactory.createOpenAIChatModel();
         var searchAssistant = new SearchAssistant(chatModel);
 
-        String result = searchAssistant.chat("What google says about Java and Generative AI?");
+        String result = searchAssistant.chat("Search latest articles about Java and Generative AI in Google");
 
-        Log.info(result);
+        logger.info(result);
     }
 }

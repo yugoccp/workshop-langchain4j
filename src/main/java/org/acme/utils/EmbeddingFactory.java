@@ -1,4 +1,4 @@
-package org.acme.factories;
+package org.acme.utils;
 
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.model.embedding.EmbeddingModel;

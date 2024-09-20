@@ -1,4 +1,4 @@
-package org.acme.factories;
+package org.acme.utils;
 
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.openai.OpenAiChatModel;

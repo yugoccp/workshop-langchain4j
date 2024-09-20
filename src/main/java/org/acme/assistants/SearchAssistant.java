@@ -5,10 +5,11 @@ import dev.langchain4j.agent.tool.Tool;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.service.AiServices;
-import io.quarkus.logging.Log;
 import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -18,6 +19,8 @@ import java.util.stream.IntStream;
 
 public class SearchAssistant {
 
+    private static final Logger logger = LoggerFactory.getLogger(SearchAssistant.class);
+
     private GoogleSearchAiService googleSearchAiService;
 
     interface GoogleSearchAiService {
@@ -25,7 +28,7 @@ public class SearchAssistant {
     }
 
     private class SearchTools {
-        @Tool("Use Google to search for relevant URLs, given the query")
+        @Tool("Search after contents in Google")
         public List<String> searchGoogleTool(@P("search query") String query) {
             if (query != null && !query.isEmpty()) {
                 return getGoogleResults(query);
@@ -52,10 +55,10 @@ public class SearchAssistant {
 
         Document doc = null;
         try {
-            Log.info("Search at google: " + googleSearchURL);
+            logger.info("Search at google: {}", googleSearchURL);
             doc = Jsoup.connect(googleSearchURL).get();
         } catch (IOException e) {
-            Log.error("Error fetching content: " + googleSearchURL);
+            logger.error("Error fetching content: {}", googleSearchURL);
             return Collections.emptyList();
         }
 
