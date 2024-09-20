@@ -42,11 +42,13 @@ public class ChatViewController {
     private final ChatMemory chatMemory = MessageWindowChatMemory.withMaxMessages(10);
     private ContentRetriever contentRetriever;
     private String selectedFilename;
+    private String selectedPrompt;
 
     @GET
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance getView() {
         return chatView.data(
+                "selectedPrompt", selectedPrompt,
                 "selectedFilename", selectedFilename,
                 "selectedProvider", selectedProvider,
                 "chatMessages", chatMemory.messages(),
@@ -61,6 +63,8 @@ public class ChatViewController {
         assert null != messageText;
         assert !messageText.isEmpty();
         assert null != model;
+
+        selectedPrompt = null;
 
         var chatModel = switch(model) {
             case OPEN_AI -> AiModelFactory.createOpenAIChatModel();
@@ -88,6 +92,7 @@ public class ChatViewController {
         chatMemory.clear();
         contentRetriever = null;
         selectedFilename = null;
+        selectedPrompt = null;
         return getView();
     }
 
@@ -96,7 +101,7 @@ public class ChatViewController {
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance usePrompt(@QueryParam("promptName") String promptName) {
         var prompt = promptRepository.findPrompt(promptName);
-        chatMemory.add(SystemMessage.from(prompt.text()));
+        selectedPrompt = prompt.text();
         return getView();
     }
 

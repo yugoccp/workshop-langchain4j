@@ -49,7 +49,7 @@ Assim que instalar o LMStudio, abra o programa e comece a baixar o modelo **Goog
 
 ![lmstudio_gemma.png](resources%2Flmstudio_gemma.png)
 
-## Utilizar o OpenAI
+## Utilizando o OpenAI
 
 Para esse Workshop, usaremos a chave "demo" da OpenAI. 
 

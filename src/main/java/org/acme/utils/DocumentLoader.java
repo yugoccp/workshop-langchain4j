@@ -1,5 +1,6 @@
 package org.acme.utils;
 
+import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.loader.FileSystemDocumentLoader;
 import dev.langchain4j.data.document.parser.apache.pdfbox.ApachePdfBoxDocumentParser;
 import org.slf4j.Logger;
@@ -15,16 +16,16 @@ public class DocumentLoader {
 
     private static final Logger logger = LoggerFactory.getLogger(DocumentLoader.class);
 
-    public static String getContent(Path filePath) {
+    public static Document getContent(Path filePath) {
         var fileExt = getExtension(filePath.getFileName().toString());
         if (fileExt.equals("pdf")) {
-            return FileSystemDocumentLoader.loadDocument(filePath, new ApachePdfBoxDocumentParser()).text();
+            return FileSystemDocumentLoader.loadDocument(filePath, new ApachePdfBoxDocumentParser());
         } else {
-            return FileSystemDocumentLoader.loadDocument(filePath).text();
+            return FileSystemDocumentLoader.loadDocument(filePath);
         }
     }
 
-    public static String getResourceContent(String filename) {
+    public static Document getResourceDocument(String filename) {
         var path = getResourcePath(filename);
         return getContent(path);
     }

@@ -82,11 +82,11 @@ class WorkshopOpenAiITest {
         var chatModel = AiModelFactory.createOpenAIChatModel();
         var embeddingModel = EmbeddingFactory.createEmbeddingModel();
         var embeddingStore = EmbeddingFactory.createEmbeddingStore();
-        var content = DocumentLoader.getResourceContent("news.pdf");
+        var document = DocumentLoader.getResourceDocument("news.pdf");
         var contentRetriever = ContentRetrieverFactory.createContentRetriever(
                 embeddingModel,
                 embeddingStore,
-                content);
+                document);
 
         var documentAssistant = new DocumentAssistant(chatModel, contentRetriever);
 

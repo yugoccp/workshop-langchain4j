@@ -15,10 +15,10 @@ public class ContentRetrieverFactory {
     }
 
     public static ContentRetriever createContentRetriever(EmbeddingModel embeddingModel,
-                                                          EmbeddingStore<TextSegment> embeddingStore, String content) {
+                                                          EmbeddingStore<TextSegment> embeddingStore, Document document) {
         // Transform single file content into chunks of text segments.;
-        var splitter = DocumentSplitters.recursive(500, 100);
-        var segments = splitter.split(Document.from(content));
+        var splitter = DocumentSplitters.recursive(700, 100);
+        var segments = splitter.split(document);
 
         // Transform segments into embeddings (vectors)
         var embeddings = embeddingModel.embedAll(segments).content();
