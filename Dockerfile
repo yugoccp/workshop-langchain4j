@@ -1,15 +1,14 @@
-# Start with a base image containing Java runtime
 FROM eclipse-temurin:21-jdk
 
-# Set the working directory in the container
+EXPOSE 8080
+
 WORKDIR /workspace
 
 COPY pom.xml .
 COPY .mvn .mvn
-COPY mvnw .
+COPY --chmod=0755 mvnw .
 
 RUN sed -i 's/\r$//' ./mvnw
-RUN ./mvnw install -DskipTests
+RUN ./mvnw install
 
-# Keep the container running (alternatively, use an interactive shell)
 CMD ["tail", "-f", "/dev/null"]
