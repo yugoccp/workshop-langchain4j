@@ -17,7 +17,7 @@ public class ContentRetrieverFactory {
     public static ContentRetriever createContentRetriever(EmbeddingModel embeddingModel,
                                                           EmbeddingStore<TextSegment> embeddingStore, String content) {
         // Transform single file content into chunks of text segments.;
-        var splitter = DocumentSplitters.recursive(300, 0);
+        var splitter = DocumentSplitters.recursive(500, 100);
         var segments = splitter.split(Document.from(content));
 
         // Transform segments into embeddings (vectors)
@@ -29,7 +29,7 @@ public class ContentRetrieverFactory {
         return EmbeddingStoreContentRetriever.builder()
                 .embeddingStore(embeddingStore)
                 .embeddingModel(embeddingModel)
-                .maxResults(5)
+                .maxResults(7)
                 .minScore(0.5)
                 .build();
     }

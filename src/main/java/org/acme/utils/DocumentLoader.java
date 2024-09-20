@@ -15,18 +15,21 @@ public class DocumentLoader {
 
     private static final Logger logger = LoggerFactory.getLogger(DocumentLoader.class);
 
-    public static String getResource(String filename) {
-        var documentPath = toResourcePath(filename);
-        var fileExt = getExtension(filename);
-
+    public static String getContent(Path filePath) {
+        var fileExt = getExtension(filePath.getFileName().toString());
         if (fileExt.equals("pdf")) {
-            return FileSystemDocumentLoader.loadDocument(documentPath, new ApachePdfBoxDocumentParser()).text();
+            return FileSystemDocumentLoader.loadDocument(filePath, new ApachePdfBoxDocumentParser()).text();
         } else {
-            return FileSystemDocumentLoader.loadDocument(documentPath).text();
+            return FileSystemDocumentLoader.loadDocument(filePath).text();
         }
     }
 
-    private static Path toResourcePath(String fileName) {
+    public static String getResourceContent(String filename) {
+        var path = getResourcePath(filename);
+        return getContent(path);
+    }
+
+    private static Path getResourcePath(String fileName) {
         try {
             var fileUrl = DocumentLoader.class.getClassLoader().getResource(fileName);
             var filePath = fileUrl.toURI();

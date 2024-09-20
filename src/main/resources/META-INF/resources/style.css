@@ -1,24 +1,12 @@
-html,
-body {
-    height: 100vh;
-    margin: 0;
-    font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
-    display: grid;
-    grid-template-rows: 60px 1fr;
-}
-p {
-    margin: 0;
-    line-height: 1.3rem;
-    font-weight: 300;
-}
-img {
+.logo {
     height: 30px;
 }
 .left {
     grid-column-end: left;
 }
 .header-wrapper {
-    padding: 1rem 13rem;
+    height: 50px;
+    padding: 10px 50px;
     background: black;
     color: white;
 }
@@ -28,52 +16,17 @@ img {
  }
 .content-wrapper {
     background: white;
-}
-.btn {
-    border: 0px;
-    cursor: pointer;
-    color: #fff;
-    background-color: #0096FF;
-    text-align: center;
-    padding: 6px;
-    border-radius: .25rem;
-}
-.prompt-grid {
-    padding: 10px;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    column-gap: 5px;
-    row-gap: 5px;
-    clear: both;
-}
-.prompt-item {
-    display: grid;
-    align-items: stretch;
-    justify-self: stretch;
-    grid-template-rows: 1fr 30px;
-    border: solid 1px lightgrey;
-    padding: 10px;
-}
-.prompt-item-actions {
-    display: grid;
-    justify-content: end;
-    grid-auto-flow: column;
-    column-gap: 5px;
-    border-top: solid 1px lightgrey;
-    padding: 6px;
+    grid-template-columns: 300px 1fr;
 }
 .chat-view {
-    padding: 0 13rem;
+    padding: 20px;
     background: white;
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 60px 1fr 120px;
 }
-.chat-header {
-    padding: 10px;
-}
 .chat-history {
-    display: grid;
 }
 .chat-history-item {
     padding: 6px;
@@ -82,15 +35,23 @@ img {
 .chat-history-item .title {
     font-weight: 600;
 }
-.chat-history-item pre {
-    margin: 0px;
-    white-space: pre-wrap;       /* Since CSS 2.1 */
-    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-    white-space: -pre-wrap;      /* Opera 4-6 */
-    white-space: -o-pre-wrap;    /* Opera 7 */
-    word-wrap: break-word;
-}
 .chat-input-text {
     height: 80px;
     width: 100%;
+}
+.sidebar {
+    padding-top: 20px;
+    border-right: 1px solid lightgrey;
+}
+.sidebar .container {
+    padding-bottom: 20px;
+}
+.prompt-list {
+    padding: 0px;
+}
+.prompt-item {
+    list-style-type: none;
+    height: 50px;
+    border-bottom: 1px solid lightgrey;
+    padding: 10px;
 }

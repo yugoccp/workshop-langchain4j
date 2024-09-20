@@ -32,7 +32,7 @@ public class CsvPromptRepository implements PromptRepository {
     }
 
     private List<String[]> readCsv(String filename) {
-        var csvFile = DocumentLoader.getResource(filename);
+        var csvFile = DocumentLoader.getResourceContent(filename);
         return Stream.of(csvFile.split("\n"))
                 .map(line -> line.split(CSV_DELIMITER))
                 .toList();
