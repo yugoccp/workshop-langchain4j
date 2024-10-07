@@ -2,6 +2,7 @@
 
 Olá! Para realizar esse Workshop, você precisará das seguintes ferramentas na sua máquina:
 
+- JDK 21
 - LMStudio
 - Docker
 - Docker Compose
@@ -32,7 +33,19 @@ docker compose exec -it workshop-app bash
 ./mvnw compile quarkus:dev
 ```
 
+Pronto! Pode acessar a aplicação no seu navegador preferido pelo endereço `http://localhost:8080`
+
 # Instalação
+
+## Instalar JDK 21
+
+Caso você queira apenas executar e ver o código, pode fazer isso com o Docker e Docker Compose, sem a necessidade de instalar o JDK.
+
+Mas caso queira desenvolver numa IDE, precisará instalar o JDK 21 na sua máquina para compilar a aplicação.
+
+Caso não tenha uma distribuição preferida, recomendo instalar a versão do Eclipse Temurin 21-LTS:
+
+https://adoptium.net/temurin/releases/
 
 ## Instalar LMStudio
 Visite o site e siga as instruções para instalar o LMStudio
