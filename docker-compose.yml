@@ -1,0 +1,11 @@
+# Arquivo Docker Compose para iniciar seu ambiente de desenvolvimento e teste local
+services:
+  workshop-app:
+    container_name: workshop-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    volumes:
+      - ./src:/workspace/src
