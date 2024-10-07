@@ -1,7 +1,6 @@
 package org.acme.app.views;
 
 import dev.langchain4j.data.message.AiMessage;
-import dev.langchain4j.data.message.SystemMessage;
 import dev.langchain4j.data.message.UserMessage;
 import dev.langchain4j.memory.ChatMemory;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
@@ -112,7 +111,7 @@ public class ChatViewController {
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance uploadFile(@RestForm("file") FileUpload fileUpload) {
         try {
-            var content = DocumentLoader.getContent(fileUpload.uploadedFile().toAbsolutePath());
+            var content = DocumentLoader.getContent(fileUpload.uploadedFile().toAbsolutePath(), fileUpload.fileName());
             var embeddingModel = EmbeddingFactory.createEmbeddingModel();
             var embeddingStore = EmbeddingFactory.createEmbeddingStore();
             selectedFilename = fileUpload.fileName();
