@@ -7,8 +7,9 @@
 .header-wrapper {
     height: 50px;
     padding: 10px 50px;
-    background: black;
-    color: white;
+    background: white;
+    border-bottom: solid 3px black;
+    color: black;
 }
 .header {
     display: grid;
