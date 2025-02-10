@@ -23,8 +23,6 @@ import org.jboss.resteasy.reactive.multipart.FileUpload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Objects;
-
 import static org.acme.app.dto.ModelProviderEnum.OPEN_AI;
 
 @Path("chat-view")
@@ -60,26 +58,26 @@ public class ChatViewController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance sendMessage(
-        @FormParam("text") String messageText, 
+        @FormParam("text") String userMessage, 
         @FormParam("model") ModelProviderEnum model,
         @FormParam("systemMessage") String systemMessage) {
         
-        assert null != messageText;
-        assert !messageText.isEmpty();
-        assert null != model;
+        assert userMessage != null;
+        assert !userMessage.isEmpty();
+        assert model != null;
         
         var chatModel = switch(model) {
             case OPEN_AI -> AiModelFactory.createOpenAIChatModel();
             case LOCAL -> AiModelFactory.createLocalChatModel();
         };
 
-        if (Objects.nonNull(systemMessage) && !systemMessage.isEmpty()) {
+        if (systemMessage != null && !systemMessage.isEmpty()) {
             chatMemory.add(SystemMessage.from(systemMessage));
         }
         
-        chatMemory.add(UserMessage.from(messageText));
+        chatMemory.add(UserMessage.from(userMessage));
         
-        if (Objects.nonNull(contentRetriever)) {
+        if (contentRetriever  != null) {
             var documentAssistant = new DocumentAssistant(chatModel, contentRetriever);
             var response = documentAssistant.chat(chatMemory.messages());
             chatMemory.add(AiMessage.from(response));
