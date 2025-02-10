@@ -33,7 +33,16 @@ docker compose exec -it workshop-app bash
 ./mvnw compile quarkus:dev
 ```
 
-Pronto! Pode acessar a aplicação no seu navegador preferido pelo endereço `http://localhost:8080`
+Confirme sua opção para contribuir com as informações de build time para o Quarkus community:
+```shell
+----------------------------
+--- Help improve Quarkus ---
+----------------------------
+* Learn more: https://quarkus.io/usage/
+* Do you agree to contribute anonymous build time data to the Quarkus community? (y/n and enter) 
+```
+
+Pronto! Acesse o endereço `http://localhost:8080/` para visualizar a aplicação.
 
 # Instalação
 
