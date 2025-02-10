@@ -1,6 +1,7 @@
 package org.acme.app.views;
 
 import dev.langchain4j.data.message.AiMessage;
+import dev.langchain4j.data.message.SystemMessage;
 import dev.langchain4j.data.message.UserMessage;
 import dev.langchain4j.memory.ChatMemory;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
@@ -58,20 +59,26 @@ public class ChatViewController {
     @Path("send")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.TEXT_HTML)
-    public TemplateInstance sendMessage(@FormParam("text") String messageText, @FormParam("model") ModelProviderEnum model) {
+    public TemplateInstance sendMessage(
+        @FormParam("text") String messageText, 
+        @FormParam("model") ModelProviderEnum model,
+        @FormParam("systemMessage") String systemMessage) {
+        
         assert null != messageText;
         assert !messageText.isEmpty();
         assert null != model;
-
-        selectedPrompt = null;
-
+        
         var chatModel = switch(model) {
             case OPEN_AI -> AiModelFactory.createOpenAIChatModel();
             case LOCAL -> AiModelFactory.createLocalChatModel();
         };
 
+        if (Objects.nonNull(systemMessage) && !systemMessage.isEmpty()) {
+            chatMemory.add(SystemMessage.from(systemMessage));
+        }
+        
         chatMemory.add(UserMessage.from(messageText));
-
+        
         if (Objects.nonNull(contentRetriever)) {
             var documentAssistant = new DocumentAssistant(chatModel, contentRetriever);
             var response = documentAssistant.chat(chatMemory.messages());

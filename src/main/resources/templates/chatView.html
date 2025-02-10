@@ -72,8 +72,10 @@
                 </div>
                 <div class="chat-input">
                     <form action="/chat-view/send" method="post" enctype="multipart/form-data" id="sendMessageForm">
+                        <label class="form-label" for="systemMessage"></label>
+                        <textarea class="chat-input-text" id="systemMessage" name="systemMessage" placeholder="Add system message...">{#if selectedPrompt}{selectedPrompt.raw}{/if}</textarea>
                         <label class="form-label" for="text"></label>
-                        <textarea class="chat-input-text" id="text" name="text">{#if selectedPrompt}{selectedPrompt.raw}{/if}</textarea>
+                        <textarea class="chat-input-text" id="text" name="text"></textarea>
                         <button class="btn btn-primary btn-sm" type="submit">Submit</button>
                     </form>
                 </div>

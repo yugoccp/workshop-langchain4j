@@ -20,7 +20,7 @@ public class DocumentLoader {
 
     public static Document getContent(Path filePath, String filename) {
         var fileExt = getExtension(filename);
-        logger.info("Loading file from {}", filePath);
+        logger.debug("Loading file from {}", filePath);
 
         try {
             return switch (fileExt) {
